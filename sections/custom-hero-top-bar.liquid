@@ -1,0 +1,458 @@
+{%- comment -%}
+  Custom Hero & Top Bar Section
+  Built from scratch for maximum control and customization.
+{%- endcomment -%}
+
+<section id="custom-hero-section-{{ section.id }}" class="custom-hero-section">
+  <!-- Top Bar -->
+  <div class="custom-top-bar">
+    <div class="custom-top-bar__logo">
+      {% if section.settings.logo_image != blank %}
+        <img src="{{ section.settings.logo_image | image_url: width: 300 }}" alt="{{ shop.name }}" class="custom-top-bar__logo-img" loading="lazy">
+      {% else %}
+        <span class="custom-top-bar__logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+      {% endif %}
+    </div>
+    
+    <div class="custom-top-bar__text">
+      {{ section.settings.top_bar_text }}
+    </div>
+    
+    <div class="custom-top-bar__button-wrapper">
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link | default: '#' }}" class="custom-top-bar__btn">
+          {{ section.settings.button_text }}
+          <span class="custom-top-bar__btn-arrow">&rarr;</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Hero Container -->
+  <div class="custom-hero-container">
+    {% if section.settings.image_1 != blank %}
+      <img src="{{ section.settings.image_1 | image_url: width: 2000 }}" alt="Hero Background" class="custom-hero__bg-img" loading="eager">
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'custom-hero__bg-img placeholder-svg' }}
+    {% endif %}
+
+    <div class="custom-hero__overlay">
+      <div class="custom-hero__flex-box">
+        <div class="custom-hero__text-box">
+          <div class="custom-hero__text-content">
+            {{ section.settings.hero_text }}
+          </div>
+        </div>
+        <div class="custom-hero__image-2-box">
+          {% if section.settings.image_2 != blank %}
+            <img src="{{ section.settings.image_2 | image_url: width: 800 }}" alt="Hero Feature" class="custom-hero__image-2" loading="eager">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'custom-hero__image-2 placeholder-svg' }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text Container -->
+  <div class="custom-text-container">
+    <div class="custom-text-container__content">
+      {{ section.settings.bottom_text }}
+    </div>
+  </div>
+</section>
+
+<style>
+#custom-hero-section-{{ section.id }} {
+  --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
+  --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
+  --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
+  --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
+  --hero-textbox-bg: {{ section.settings.hero_textbox_bg | default: 'rgba(255, 255, 255, 0.75)' }};
+  --hero-textbox-color: {{ section.settings.hero_textbox_color | default: '#000000' }};
+  --bottom-text-bg: {{ section.settings.bottom_text_bg | default: '#ffffff' }};
+  --bottom-text-color: {{ section.settings.bottom_text_color | default: '#000000' }};
+}
+
+.custom-hero-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow: hidden;
+}
+
+/* Top Bar Styling */
+.custom-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 8px;
+  background-color: var(--topbar-bg);
+  color: var(--topbar-color);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 16px;
+}
+
+.custom-top-bar__logo {
+  flex-shrink: 0;
+}
+
+.custom-top-bar__logo-img {
+  max-height: 40px;
+  width: auto;
+  display: block;
+}
+
+.custom-top-bar__logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-top-bar__text {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.custom-top-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  border: 1px solid var(--btn-bg);
+  color: var(--btn-bg);
+  background-color: transparent;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+}
+
+.custom-top-bar__btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--btn-bg);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.custom-top-bar__btn:hover {
+  color: var(--btn-color);
+}
+
+.custom-top-bar__btn:hover::before {
+  width: 100%;
+}
+
+.custom-top-bar__btn-arrow {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.custom-top-bar__btn:hover .custom-top-bar__btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Hero Styling */
+.custom-hero-container {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.custom-hero__bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.custom-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2;
+}
+
+.custom-hero__flex-box {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  align-items: center;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.custom-hero__text-box {
+  flex: 1;
+  background: var(--hero-textbox-bg);
+  color: var(--hero-textbox-color);
+  padding: 40px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.custom-hero__text-content h1, 
+.custom-hero__text-content h2, 
+.custom-hero__text-content h3 {
+  margin-top: 0;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.custom-hero__text-content p {
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.custom-hero__image-2-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.custom-hero__image-2 {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+}
+
+.custom-hero__image-2:hover {
+  transform: scale(1.02);
+}
+
+/* Bottom Text Container Styling */
+.custom-text-container {
+  padding: 32px 8px;
+  background-color: var(--bottom-text-bg);
+  color: var(--bottom-text-color);
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.custom-text-container__content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 989px) {
+  .custom-hero-container {
+    height: auto;
+    min-height: 600px;
+  }
+  
+  .custom-hero__flex-box {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .custom-hero__text-box {
+    padding: 30px;
+    width: 100%;
+  }
+  
+  .custom-hero__image-2 {
+    max-height: 300px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .custom-top-bar {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px 8px;
+    gap: 12px;
+  }
+  
+  .custom-top-bar__text {
+    order: 3;
+  }
+  
+  .custom-top-bar__logo {
+    order: 1;
+  }
+  
+  .custom-top-bar__button-wrapper {
+    order: 2;
+    width: 100%;
+  }
+
+  .custom-top-bar__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Hero & Top Bar",
+  "tag": "section",
+  "class": "shopify-section-custom-hero-top-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Top Bar Settings"
+    },
+    {
+      "type": "color",
+      "id": "top_bar_bg",
+      "label": "Top Bar Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "top_bar_color",
+      "label": "Top Bar Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text (Fallback)",
+      "default": "My Shop"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "top_bar_text",
+      "label": "Top Bar Announcement Text",
+      "default": "Free shipping on orders over $50!"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Primary Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Text Hover Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Hero Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Hero Background Image (Image 1)"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_text",
+      "label": "Hero Text Content",
+      "default": "<h2>New Arrivals</h2><p>Discover our latest collection of premium products, designed to elevate your daily style.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Hero Feature Image (Image 2)"
+    },
+    {
+      "type": "color",
+      "id": "hero_textbox_bg",
+      "label": "Text Box Background (With Alpha)",
+      "default": "rgba(255, 255, 255, 0.75)"
+    },
+    {
+      "type": "color",
+      "id": "hero_textbox_color",
+      "label": "Text Box Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Text Container Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "bottom_text",
+      "label": "Bottom Container Text",
+      "default": "<p>We source the finest materials to produce sustainable and long-lasting goods for our global community.</p>"
+    },
+    {
+      "type": "color",
+      "id": "bottom_text_bg",
+      "label": "Bottom Text Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "bottom_text_color",
+      "label": "Bottom Text Color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Hero & Top Bar"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,719 @@
+{%- comment -%}
+  Custom Products Grid with Quick Add Variant Selector
+  Built completely from scratch.
+{%- endcomment -%}
+
+<section id="custom-products-grid-{{ section.id }}" class="custom-products-grid">
+  {% if section.settings.title != blank %}
+    <h2 class="custom-products-grid__title">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="custom-products-grid__container">
+    <div class="custom-products-grid__items">
+      {% for product in section.settings.product_list %}
+        {% liquid
+          assign variant = product.selected_or_first_available_variant
+          assign has_multiple_variants = false
+          if product.variants.size > 1
+            assign has_multiple_variants = true
+          endif
+        %}
+        
+        <div class="custom-product-card" id="product-card-{{ product.id }}">
+          <div class="custom-product-card__media">
+            {% if product.featured_image != blank %}
+              <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" class="custom-product-card__img" loading="lazy">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'custom-product-card__img placeholder-svg' }}
+            {% endif %}
+            
+            <!-- Floating Quick Add Trigger -->
+            <button class="custom-product-card__quick-add-trigger" aria-label="Add to cart" data-product-id="{{ product.id }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="custom-product-card__plus-icon">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="custom-product-card__info">
+            <h3 class="custom-product-card__title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            <div class="custom-product-card__price custom-product-price">
+              {{ variant.price | money }}
+            </div>
+          </div>
+          
+          <!-- Inline Variant Selector Drawer / Overlay -->
+          <custom-quick-add class="custom-quick-add" data-variants="{{ product.variants | json | escape }}">
+            <div class="custom-quick-add-overlay">
+              <button class="custom-quick-add-overlay__close" aria-label="Close variant selector">&times;</button>
+              
+              <form class="custom-quick-add-form">
+                <input type="hidden" name="id" value="{{ variant.id }}">
+                
+                <h4 class="custom-quick-add-overlay__title">{{ product.title }}</h4>
+                
+                {% if has_multiple_variants %}
+                  <div class="custom-quick-add-options">
+                    {% for option in product.options_with_values %}
+                      <div class="custom-option-group" data-option-index="{{ forloop.index0 }}">
+                        <span class="custom-option-label">{{ option.name }}:</span>
+                        <div class="custom-option-values">
+                          {% for value in option.values %}
+                            <label class="custom-option-value">
+                              <input type="radio" 
+                                     name="option-{{ product.id }}-{{ option.name | handle }}" 
+                                     value="{{ value | escape }}" 
+                                     {% if option.selected_value == value %}checked{% endif %}>
+                              <span class="custom-option-value-text">{{ value }}</span>
+                            </label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                
+                <button type="submit" class="custom-quick-add-submit" {% unless variant.available %}disabled{% endunless %}>
+                  {% if variant.available %}
+                    Add to Cart
+                  {% else %}
+                    Sold Out
+                  {% endif %}
+                </button>
+              </form>
+            </div>
+          </custom-quick-add>
+        </div>
+      {% else %}
+        {% for i in (1..4) %}
+          <div class="custom-product-card custom-product-card--placeholder">
+            <div class="custom-product-card__media">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'custom-product-card__img placeholder-svg' }}
+            </div>
+            <div class="custom-product-card__info">
+              <h3 class="custom-product-card__title">Example Product</h3>
+              <div class="custom-product-card__price">$19.99</div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Scoped Custom Toast Notifications -->
+<div id="custom-cart-toast" class="custom-cart-toast">
+  <div class="custom-cart-toast__content">
+    <div class="custom-cart-toast__header">
+      <span class="custom-cart-toast__checkmark">&check;</span>
+      <span class="custom-cart-toast__message">Added to cart successfully!</span>
+    </div>
+    <div class="custom-cart-toast__footer">
+      <a href="/cart" class="custom-cart-toast__link">View Cart</a>
+      <a href="/checkout" class="custom-cart-toast__link custom-cart-toast__link--checkout">Checkout</a>
+    </div>
+  </div>
+</div>
+
+<style>
+#custom-products-grid-{{ section.id }} {
+  --grid-padding-x: 8px;
+  --grid-padding-y: 16px;
+  --card-bg: #ffffff;
+  --card-text-color: #000000;
+  --btn-plus-bg: #000000;
+  --btn-plus-color: #ffffff;
+  --overlay-bg: rgba(255, 255, 255, 0.98);
+  --submit-bg: #000000;
+  --submit-color: #ffffff;
+  --toast-bg: #ffffff;
+  --toast-color: #000000;
+}
+
+.custom-products-grid {
+  padding: var(--grid-padding-y) var(--grid-padding-x);
+  width: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  box-sizing: border-box;
+}
+
+.custom-products-grid__title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
+}
+
+.custom-products-grid__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.custom-products-grid__items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Product Card Styling */
+.custom-product-card {
+  background-color: var(--card-bg);
+  color: var(--card-text-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.custom-product-card__media {
+  position: relative;
+  padding-bottom: 125%; /* 4:5 Aspect Ratio */
+  width: 100%;
+  background-color: #f7f7f7;
+  overflow: hidden;
+}
+
+.custom-product-card__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.custom-product-card:hover .custom-product-card__img {
+  transform: scale(1.05);
+}
+
+/* Floating Plus Button */
+.custom-product-card__quick-add-trigger {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--btn-plus-bg);
+  color: var(--btn-plus-color);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease;
+  z-index: 5;
+}
+
+.custom-product-card__quick-add-trigger:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.custom-product-card__plus-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.custom-product-card__info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.custom-product-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.custom-product-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.custom-product-card__title a:hover {
+  color: #3b82f6;
+}
+
+.custom-product-card__price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+/* Quick Add Overlay */
+.custom-quick-add {
+  display: block;
+}
+
+.custom-quick-add-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--overlay-bg);
+  z-index: 10;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.custom-quick-add-overlay.is-active {
+  transform: translateY(0);
+}
+
+.custom-quick-add-overlay__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: inherit;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.custom-quick-add-overlay__close:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.custom-quick-add-overlay__title {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding-right: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.custom-quick-add-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.custom-quick-add-options {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  padding-right: 4px;
+}
+
+.custom-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-option-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.custom-option-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.custom-option-value {
+  cursor: pointer;
+}
+
+.custom-option-value input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-option-value-text {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.custom-option-value input[type="radio"]:checked + .custom-option-value-text {
+  border-color: #000;
+  background-color: #000;
+  color: #fff;
+}
+
+.custom-quick-add-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--submit-bg);
+  color: var(--submit-color);
+  border: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.custom-quick-add-submit:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.custom-quick-add-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
+/* Spinner Animation */
+.custom-quick-add-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: custom-spin 0.6s linear infinite;
+  display: inline-block;
+}
+
+@keyframes custom-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Custom Toast Notification Styling */
+.custom-cart-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background-color: var(--toast-bg);
+  color: var(--toast-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 9999;
+  width: 320px;
+  transform: translateX(120%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: inherit;
+}
+
+.custom-cart-toast.is-active {
+  transform: translateX(0);
+}
+
+.custom-cart-toast__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.custom-cart-toast__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.custom-cart-toast__checkmark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #10b981;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.custom-cart-toast__message {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.custom-cart-toast__footer {
+  display: flex;
+  gap: 12px;
+}
+
+.custom-cart-toast__link {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.custom-cart-toast__link:hover {
+  border-color: #000;
+  background-color: #f7f7f7;
+}
+
+.custom-cart-toast__link--checkout {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.custom-cart-toast__link--checkout:hover {
+  opacity: 0.9;
+  background-color: #000;
+}
+
+/* Responsive Grid styling */
+@media screen and (max-width: 989px) {
+  .custom-products-grid__items {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .custom-products-grid__items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+</style>
+
+<script>
+if (!customElements.get('custom-quick-add')) {
+  class CustomQuickAdd extends HTMLElement {
+    constructor() {
+      super();
+      this.variants = JSON.parse(this.dataset.variants || '[]');
+      this.toastTimeout = null;
+    }
+
+    connectedCallback() {
+      this.card = this.closest('.custom-product-card');
+      this.trigger = this.card.querySelector('.custom-product-card__quick-add-trigger');
+      this.overlay = this.querySelector('.custom-quick-add-overlay');
+      this.closeBtn = this.querySelector('.custom-quick-add-overlay__close');
+      this.form = this.querySelector('.custom-quick-add-form');
+      this.submitBtn = this.querySelector('.custom-quick-add-submit');
+      this.idInput = this.querySelector('input[name="id"]');
+      this.priceEl = this.card.querySelector('.custom-product-price');
+
+      if (this.trigger) {
+        this.trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // If product has only 1 variant, add to cart directly!
+          if (this.variants.length === 1) {
+            this.addToCart(this.variants[0].id);
+          } else {
+            // Show overlay
+            this.overlay.classList.add('is-active');
+          }
+        });
+      }
+
+      if (this.closeBtn) {
+        this.closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.overlay.classList.remove('is-active');
+        });
+      }
+
+      if (this.form) {
+        this.form.addEventListener('change', () => this.updateVariant());
+        this.form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.addToCart(this.idInput.value);
+        });
+      }
+    }
+
+    updateVariant() {
+      const selectedOptions = Array.from(this.querySelectorAll('input[type="radio"]:checked')).map(el => el.value);
+      const variant = this.variants.find(v => {
+        return v.options.every((opt, idx) => opt === selectedOptions[idx]);
+      });
+
+      if (variant) {
+        this.idInput.value = variant.id;
+        this.idInput.disabled = !variant.available;
+        
+        if (variant.available) {
+          this.submitBtn.removeAttribute('disabled');
+          this.submitBtn.innerText = 'Add to Cart';
+        } else {
+          this.submitBtn.setAttribute('disabled', 'true');
+          this.submitBtn.innerText = 'Sold Out';
+        }
+
+        if (this.priceEl) {
+          const formattedPrice = this.formatMoney(variant.price);
+          this.priceEl.innerHTML = formattedPrice;
+        }
+      } else {
+        this.submitBtn.setAttribute('disabled', 'true');
+        this.submitBtn.innerText = 'Unavailable';
+      }
+    }
+
+    async addToCart(variantId) {
+      if (!variantId) return;
+      
+      const originalBtnText = this.submitBtn ? this.submitBtn.innerText : 'Add to Cart';
+      
+      if (this.submitBtn) {
+        this.submitBtn.setAttribute('disabled', 'true');
+        this.submitBtn.innerHTML = '<span class="custom-quick-add-spinner"></span> Adding...';
+      }
+
+      try {
+        const rootPath = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+        const response = await fetch(rootPath + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+          this.showSuccessToast();
+          this.updateGlobalCartCount();
+          if (this.overlay) {
+            this.overlay.classList.remove('is-active');
+          }
+        } else {
+          alert(data.description || 'Failed to add item to cart.');
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        if (this.submitBtn) {
+          this.submitBtn.removeAttribute('disabled');
+          this.submitBtn.innerText = originalBtnText;
+          this.updateVariant();
+        }
+      }
+    }
+
+    showSuccessToast() {
+      const toast = document.getElementById('custom-cart-toast');
+      if (!toast) return;
+
+      toast.classList.add('is-active');
+      
+      // Auto close toast after 4 seconds
+      if (this.toastTimeout) clearTimeout(this.toastTimeout);
+      this.toastTimeout = setTimeout(() => {
+        toast.classList.remove('is-active');
+      }, 4000);
+    }
+
+    async updateGlobalCartCount() {
+      try {
+        const rootPath = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+        const response = await fetch(rootPath + 'cart.js');
+        const cart = await response.json();
+        
+        // Find any common cart count elements in the header and update them
+        const countElements = document.querySelectorAll('.cart-count, .cart-counter, [data-cart-count], .header-actions__cart-icon span, .cart-icon-bubble span');
+        countElements.forEach(el => {
+          el.innerText = cart.item_count;
+          el.classList.remove('hidden');
+        });
+      } catch (error) {
+        console.error('Error updating cart count:', error);
+      }
+    }
+
+    formatMoney(cents) {
+      if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+        return Shopify.formatMoney(cents);
+      }
+      return '$' + (cents / 100).toFixed(2);
+    }
+  }
+  customElements.define('custom-quick-add', CustomQuickAdd);
+}
+</script>
+
+{% schema %}
+{
+  "name": "Custom Products Grid",
+  "tag": "section",
+  "class": "shopify-section-custom-products-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products to Display",
+      "limit": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Products Grid"
+    }
+  ]
+}
+{% endschema %}
