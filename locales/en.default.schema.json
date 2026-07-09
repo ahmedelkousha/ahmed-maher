@@ -932,8 +932,8 @@
     "icon_background": "Icon background",
     "icons": "Icons",
     "image": "Image",
-    "image_1": "Image 1",
-    "image_2": "Image 2",
+    "image_1": "Image One",
+    "image_2": "Image Two",
     "image_border_radius": "Image corner radius",
     "image_gap": "Image gap",
     // Image picker setting to upload custom image as icon
@@ -1086,7 +1086,7 @@
     "right": "Right",
     "right_padding": "Right padding",
     "row": "Row",
-    "scroll_speed": "next announcement time",
+    "scroll_speed": "Time to next announcement",
     "search": "Search",
     "search_icon": "Search icon",
     // Setting for search bar placement in header
