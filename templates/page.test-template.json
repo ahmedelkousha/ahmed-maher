@@ -244,10 +244,10 @@
         "padding_right_desktop": 10,
         "padding_bottom_desktop": 10,
         "padding_left_desktop": 10,
-        "padding_top_mobile": 40,
-        "padding_right_mobile": 20,
-        "padding_bottom_mobile": 40,
-        "padding_left_mobile": 20
+        "padding_top_mobile": 6,
+        "padding_right_mobile": 6,
+        "padding_bottom_mobile": 6,
+        "padding_left_mobile": 6
       }
     },
     "custom_products_grid_AYk9xj": {
