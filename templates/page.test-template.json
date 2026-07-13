@@ -239,14 +239,14 @@
         "btn_padding_x_mobile": 24,
         "container_width_desktop": 1200,
         "background_color_desktop": "#F5F5F5",
-        "background_color_mobile": "#ffffff",
+        "background_color_mobile": "#F5F5F5",
         "padding_top_desktop": 10,
         "padding_right_desktop": 10,
         "padding_bottom_desktop": 10,
         "padding_left_desktop": 10,
-        "padding_top_mobile": 6,
+        "padding_top_mobile": 10,
         "padding_right_mobile": 6,
-        "padding_bottom_mobile": 6,
+        "padding_bottom_mobile": 10,
         "padding_left_mobile": 6
       }
     },
