@@ -22,10 +22,12 @@
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -38,7 +40,9 @@
         },
         "page-content": {
           "type": "page-content",
-          "settings": {},
+          "settings": {
+            "text_color": ""
+          },
           "blocks": {}
         }
       },
@@ -46,6 +50,7 @@
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -53,9 +58,240 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "custom_split_container_iE4pCR": {
+      "type": "custom-split-container",
+      "blocks": {
+        "text_box_Fy3Wng": {
+          "type": "text_box",
+          "settings": {
+            "heading_desktop": "New Arrivals",
+            "subheading_desktop": "<p>Discover our latest collection of premium products.</p>",
+            "heading_mobile": "",
+            "subheading_mobile": "",
+            "bg_color_desktop": "#ffffff",
+            "text_color_desktop": "#000000",
+            "bg_color_mobile": "#ffffff",
+            "text_color_mobile": "#000000",
+            "heading_size_desktop": 70,
+            "subheading_size_desktop": 20,
+            "heading_size_mobile": 36,
+            "subheading_size_mobile": 16,
+            "alignment_desktop": "flex-start",
+            "width_desktop": 40,
+            "gap_desktop": 40,
+            "padding_top_desktop": 40,
+            "padding_right_desktop": 0,
+            "padding_bottom_desktop": 40,
+            "padding_left_desktop": 60,
+            "alignment_mobile": "center",
+            "gap_mobile": 16,
+            "padding_top_mobile": 30,
+            "padding_right_mobile": 20,
+            "padding_bottom_mobile": 30,
+            "padding_left_mobile": 20,
+            "button_text": "Shop Now",
+            "button_link": "",
+            "btn_bg_color": "#000000",
+            "btn_text_color": "#ffffff",
+            "btn_hover_bg": "#FFF544",
+            "btn_hover_color": "#000000",
+            "btn_font_size_desktop": 16,
+            "btn_font_size_mobile": 14,
+            "btn_padding_y_desktop": 9,
+            "btn_padding_x_desktop": 21,
+            "btn_padding_y_mobile": 9,
+            "btn_padding_x_mobile": 21,
+            "hide_on_desktop": true,
+            "hide_on_mobile": true
+          }
+        },
+        "image_dHTbHd": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Frame.png",
+            "image_mobile": "shopify://shop_images/hero-mobile.png",
+            "width_desktop": 100,
+            "hide_on_desktop": false,
+            "hide_on_mobile": true
+          }
+        }
+      },
+      "block_order": [
+        "text_box_Fy3Wng",
+        "image_dHTbHd"
+      ],
+      "name": "Custom Split Container",
+      "settings": {
+        "section_padding_left_desktop": 0,
+        "section_padding_right_desktop": 0,
+        "container_width_desktop": 1440,
+        "background_color_desktop": "#ffffff",
+        "section_padding_left_mobile": 0,
+        "section_padding_right_mobile": 0,
+        "background_color_mobile": "#ffffff"
+      }
+    },
+    "custom_split_container_K8hDxm": {
+      "type": "custom-split-container",
+      "blocks": {
+        "text_box_pWbUTC": {
+          "type": "text_box",
+          "settings": {
+            "heading_desktop": "The Gift Guide",
+            "subheading_desktop": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+            "heading_mobile": "",
+            "subheading_mobile": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
+            "bg_color_desktop": "#ffffff",
+            "text_color_desktop": "#000000",
+            "bg_color_mobile": "#ffffff",
+            "text_color_mobile": "#000000",
+            "heading_size_desktop": 70,
+            "subheading_size_desktop": 20,
+            "heading_size_mobile": 36,
+            "subheading_size_mobile": 16,
+            "alignment_desktop": "flex-start",
+            "width_desktop": 40,
+            "gap_desktop": 40,
+            "padding_top_desktop": 40,
+            "padding_right_desktop": 0,
+            "padding_bottom_desktop": 40,
+            "padding_left_desktop": 60,
+            "alignment_mobile": "center",
+            "gap_mobile": 16,
+            "padding_top_mobile": 30,
+            "padding_right_mobile": 20,
+            "padding_bottom_mobile": 30,
+            "padding_left_mobile": 20,
+            "button_text": "SHOP NOW",
+            "button_link": "",
+            "button_icon": "shopify://shop_images/arrow.png",
+            "btn_bg_color": "#000000",
+            "btn_text_color": "#ffffff",
+            "btn_hover_bg": "#FFF544",
+            "btn_hover_color": "#000000",
+            "btn_font_size_desktop": 16,
+            "btn_font_size_mobile": 14,
+            "btn_padding_y_desktop": 9,
+            "btn_padding_x_desktop": 21,
+            "btn_padding_y_mobile": 9,
+            "btn_padding_x_mobile": 21,
+            "hide_on_desktop": false,
+            "hide_on_mobile": false
+          }
+        },
+        "image_ik4Eke": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Frame_1.png",
+            "width_desktop": 100,
+            "hide_on_desktop": false,
+            "hide_on_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "text_box_pWbUTC",
+        "image_ik4Eke"
+      ],
+      "name": "Custom Split Container",
+      "settings": {
+        "section_padding_left_desktop": 0,
+        "section_padding_right_desktop": 0,
+        "container_width_desktop": 1440,
+        "background_color_desktop": "#ffffff",
+        "section_padding_left_mobile": 0,
+        "section_padding_right_mobile": 0,
+        "background_color_mobile": "#ffffff"
+      }
+    },
+    "custom_text_container_DUJ6h8": {
+      "type": "custom-text-container",
+      "name": "Custom Text Container",
+      "settings": {
+        "title": "",
+        "text": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>",
+        "title_mobile": "",
+        "text_mobile": "<p>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</p>",
+        "heading_alignment_desktop": "center",
+        "heading_size_desktop": 40,
+        "heading_color_desktop": "#000000",
+        "heading_alignment_mobile": "center",
+        "heading_size_mobile": 28,
+        "heading_color_mobile": "#000000",
+        "text_alignment_desktop": "center",
+        "text_size_desktop": 18,
+        "text_color_desktop": "#333333",
+        "text_alignment_mobile": "center",
+        "text_size_mobile": 16,
+        "text_color_mobile": "#333333",
+        "button_text": "",
+        "button_link": "",
+        "btn_bg_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "btn_hover_bg": "#FFF544",
+        "btn_hover_color": "#000000",
+        "btn_font_size_desktop": 16,
+        "btn_font_size_mobile": 14,
+        "btn_padding_y_desktop": 0,
+        "btn_padding_x_desktop": 0,
+        "btn_padding_y_mobile": 10,
+        "btn_padding_x_mobile": 24,
+        "container_width_desktop": 1200,
+        "background_color_desktop": "#F5F5F5",
+        "background_color_mobile": "#ffffff",
+        "padding_top_desktop": 10,
+        "padding_right_desktop": 10,
+        "padding_bottom_desktop": 10,
+        "padding_left_desktop": 10,
+        "padding_top_mobile": 40,
+        "padding_right_mobile": 20,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 20
+      }
+    },
+    "custom_products_grid_AYk9xj": {
+      "type": "custom-products-grid",
+      "name": "Custom Products Grid",
+      "settings": {
+        "title": "Tisso vison in the wild",
+        "heading_alignment_desktop": "left",
+        "heading_size_desktop": 32,
+        "heading_color_desktop": "#000000",
+        "heading_alignment_mobile": "center",
+        "heading_size_mobile": 24,
+        "heading_color_mobile": "#000000",
+        "product_list": [
+          "black-leather-bag",
+          "blue-silk-tuxedo",
+          "chequered-red-shirt",
+          "classic-leather-jacket",
+          "classic-varsity-top",
+          "dark-denim-top"
+        ],
+        "max_products": 6,
+        "columns_desktop": 3,
+        "rows_desktop": 2,
+        "gap_desktop": 24,
+        "columns_mobile": 2,
+        "rows_mobile": 3,
+        "gap_mobile": 12,
+        "padding_top_desktop": 16,
+        "padding_right_desktop": 8,
+        "padding_bottom_desktop": 16,
+        "padding_left_desktop": 8,
+        "padding_top_mobile": 12,
+        "padding_right_mobile": 8,
+        "padding_bottom_mobile": 12,
+        "padding_left_mobile": 8
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_split_container_iE4pCR",
+    "custom_split_container_K8hDxm",
+    "custom_text_container_DUJ6h8",
+    "custom_products_grid_AYk9xj"
   ]
 }
