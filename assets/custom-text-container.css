@@ -1,0 +1,161 @@
+  /* Conditionally display or hide typography nodes depending on active viewport breakpoints */
+  span.custom-text-desktop {
+    display: inline !important;
+  }
+
+  span.custom-text-mobile {
+    display: none !important;
+  }
+
+  div.custom-text-desktop {
+    display: block !important;
+  }
+
+  div.custom-text-mobile {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 768px) {
+    span.custom-text-desktop {
+      display: none !important;
+    }
+
+    span.custom-text-mobile {
+      display: inline !important;
+    }
+
+    div.custom-text-desktop {
+      display: none !important;
+    }
+
+    div.custom-text-mobile {
+      display: block !important;
+    }
+  }
+
+  .custom-text-section {
+    width: 100%;
+    background-color: var(--bg-color-desktop);
+    box-sizing: border-box;
+    padding-top: var(--padding-top-desktop);
+    padding-right: var(--padding-right-desktop);
+    padding-bottom: var(--padding-bottom-desktop);
+    padding-left: var(--padding-left-desktop);
+  }
+
+  .custom-text-section__container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Formatting rules for section heading including line heights and alignment variables */
+  .custom-text-section__title {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: var(--heading-align-desktop);
+    font-size: var(--heading-size-desktop);
+    color: var(--heading-color-desktop);
+  }
+
+  /* Formatting properties for paragraphs, handling font sizes and paragraph margins */
+  .custom-text-section__text {
+    line-height: 1.6;
+    text-align: var(--text-align-desktop);
+    font-size: var(--text-size-desktop);
+    color: var(--text-color-desktop);
+  }
+
+  .custom-text-section__text p {
+    margin: 0 0 16px 0;
+  }
+
+  .custom-text-section__text p:last-child {
+    margin: 0;
+  }
+
+  /* Visual design guidelines for the CTA button, including slide animations and shapes as in figma design */
+  .custom-text-section__btn-wrapper {
+    display: flex;
+    justify-content: var(--btn-wrapper-align-desktop);
+  }
+
+  .custom-text-section__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    font-size: var(--btn-size-desktop);
+    padding: var(--btn-pad-y-desktop) var(--btn-pad-x-desktop);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .custom-text-section__btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .custom-text-section__btn:hover::before {
+    width: 100%;
+    opacity: 1;
+  }
+
+  .custom-text-section__btn-icon {
+    transition: transform 0.4s ease, filter 0.4s ease;
+    display: inline-block;
+    max-width: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+  }
+
+  /* Compact layout overrides to scale paddings and font size parameters down on mobile devices */
+  @media screen and (max-width: 768px) {
+    .custom-text-section {
+      background-color: var(--bg-color-mobile);
+      padding-top: var(--padding-top-mobile);
+      padding-right: var(--padding-right-mobile);
+      padding-bottom: var(--padding-bottom-mobile);
+      padding-left: var(--padding-left-mobile);
+    }
+
+    .custom-text-section__title {
+      text-align: var(--heading-align-mobile);
+      font-size: var(--heading-size-mobile);
+      color: var(--heading-color-mobile);
+    }
+
+    .custom-text-section__text {
+      text-align: var(--text-align-mobile);
+      font-size: var(--text-size-mobile);
+      color: var(--text-color-mobile);
+    }
+
+    .custom-text-section__btn-wrapper {
+      justify-content: var(--btn-wrapper-align-mobile);
+    }
+
+    .custom-text-section__btn {
+      font-size: var(--btn-size-mobile);
+      padding: var(--btn-pad-y-mobile) var(--btn-pad-x-mobile);
+    }
+  }

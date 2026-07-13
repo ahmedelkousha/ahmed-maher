@@ -1,0 +1,774 @@
+<section id="custom-top-bar-section-{{ section.id }}" class="custom-top-bar-section">
+  {% comment %} 
+    Top-bar container wrapper, background/text color, and font-size settings are dynamically configured in the editor.
+  {% endcomment %}
+  <div class="custom-top-bar">
+    {% comment %} 
+      Mobile Menu Toggle Button. Reveals the announcement messaging and CTA button 
+      with sliding effect box on mobile devices.
+    {% endcomment %}
+    <div class="custom-top-bar__menu-toggle">
+      <button class="custom-top-bar__hamburger-btn" aria-label="Menu" aria-controls="custom-top-bar-dropdown-{{ section.id }}">
+        <span class="line-1"></span>
+        <span class="line-2"></span>
+        <span class="line-3"></span>
+      </button>
+    </div>
+
+    {% comment %} 
+      Desktop Blocks Renderer. Iterates through logo, announcement text, and CTA button blocks 
+      and places them in a flexible horizontal container.
+    {% endcomment %}
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'logo' %}
+          <div id="block-logo-{{ block.id }}" class="custom-top-bar__logo" {{ block.shopify_attributes }}>
+            {% if block.settings.logo_image != blank %}
+              <img
+                src="{{ block.settings.logo_image | image_url: width: 300 }}"
+                alt="{{ shop.name }}"
+                class="custom-top-bar__logo-img"
+                loading="lazy"
+                width="{{ block.settings.logo_image.width }}"
+                height="{{ block.settings.logo_image.height }}"
+              >
+            {% else %}
+              <span class="custom-top-bar__logo-text">{{ block.settings.logo_text | default: shop.name }}</span>
+            {% endif %}
+          </div>
+
+        {% when 'text' %}
+          <div id="block-text-{{ block.id }}" class="custom-top-bar__text desktop-only" {{ block.shopify_attributes }}>
+            {{ block.settings.top_bar_text }}
+          </div>
+
+        {% when 'button' %}
+          <div id="block-btn-wrapper-{{ block.id }}" class="custom-top-bar__button-wrapper desktop-only" {{ block.shopify_attributes }}>
+            {% if block.settings.button_text != blank %}
+              <a id="block-btn-{{ block.id }}" href="{{ block.settings.button_link | default: '#' }}" class="custom-top-bar__btn">
+                {{ block.settings.button_text }}
+                {% if block.settings.button_icon != blank %}
+                  <img
+                    src="{{ block.settings.button_icon | image_url: width: 24 }}"
+                    alt=""
+                    class="custom-top-bar__btn-icon"
+                    width="{{ block.settings.button_icon.width }}"
+                    height="{{ block.settings.button_icon.height }}"
+                  >
+                {% endif %}
+              </a>
+            {% endif %}
+          </div>
+      {% endcase %}
+    {% endfor %}
+
+    {% comment %} 
+      Symmetry Spacer. An empty flex item that aligns the logo exactly in the horizontal center 
+      of the mobile viewport, balancing the space taken by the hamburger button on the left.
+    {% endcomment %}
+    <div class="custom-top-bar__right-spacer"></div>
+  </div>
+
+  {% comment %} 
+    Mobile sliding menu. Operates as an expandable content drawer, dynamically toggled by the hamburger 
+    button clicks, which slides to reveal hidden button and text blocks.
+  {% endcomment %}
+  <div id="custom-top-bar-dropdown-{{ section.id }}" class="custom-top-bar__mobile-dropdown">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'text' %}
+          <div id="block-text-mobile-{{ block.id }}" class="custom-top-bar__text mobile-only" {{ block.shopify_attributes }}>
+            {{ block.settings.top_bar_text }}
+          </div>
+
+        {% when 'button' %}
+          <div id="block-btn-wrapper-mobile-{{ block.id }}" class="custom-top-bar__button-wrapper mobile-only" {{ block.shopify_attributes }}>
+            {% if block.settings.button_text != blank %}
+              <a id="block-btn-mobile-{{ block.id }}" href="{{ block.settings.button_link | default: '#' }}" class="custom-top-bar__btn">
+                {{ block.settings.button_text }}
+                {% if block.settings.button_icon != blank %}
+                  <img
+                    src="{{ block.settings.button_icon | image_url: width: 24 }}"
+                    alt=""
+                    class="custom-top-bar__btn-icon"
+                    width="{{ block.settings.button_icon.width }}"
+                    height="{{ block.settings.button_icon.height }}"
+                  >
+                {% endif %}
+              </a>
+            {% endif %}
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{{ 'custom-top-bar.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #custom-top-bar-section-{{ section.id }} {
+    position: relative;
+    --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
+    --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
+    --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
+    --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
+  }
+
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'logo' -%}
+      #block-logo-{{ block.id }} {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: {{ block.settings.logo_align_desktop | default: 'flex-start' }};
+        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+      }
+      #block-logo-{{ block.id }} .custom-top-bar__logo-text {
+        font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
+        color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
+      }
+
+      @media screen and (max-width: 768px) {
+        #block-logo-{{ block.id }} {
+          justify-content: {{ block.settings.logo_align_mobile | default: 'center' }};
+          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+        }
+        #block-logo-{{ block.id }} .custom-top-bar__logo-text {
+          font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
+        }
+      }
+
+    {%- elsif block.type == 'text' -%}
+      #block-text-{{ block.id }} {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
+        background-color: {{ block.settings.text_bg | default: 'transparent' }};
+        justify-content: {{ block.settings.text_align_desktop | default: 'center' }};
+        text-align: {{ block.settings.text_align_desktop | default: 'center' }};
+        font-size: {{ block.settings.text_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+      }
+
+      @media screen and (max-width: 768px) {
+        #block-text-mobile-{{ block.id }} {
+          display: flex;
+          justify-content: {{ block.settings.text_align_mobile | default: 'center' }};
+          text-align: {{ block.settings.text_align_mobile | default: 'center' }};
+          font-size: {{ block.settings.text_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+          color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
+          background-color: {{ block.settings.text_bg | default: 'transparent' }};
+          width: 100%;
+          box-sizing: border-box;
+          margin-bottom: 20px;
+        }
+      }
+
+    {%- elsif block.type == 'button' -%}
+      #block-btn-wrapper-{{ block.id }} {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: {{ block.settings.btn_align_desktop | default: 'flex-end' }};
+      }
+
+      #block-btn-{{ block.id }},
+      #block-btn-mobile-{{ block.id }} {
+        --btn-font-size: {{ block.settings.btn_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
+        --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
+        --btn-bg-color: {{ block.settings.button_bg_color | default: '#FFF544' }};
+        --btn-text-color: {{ block.settings.button_text_color | default: '#000000' }};
+        --btn-hover-bg: {{ block.settings.button_hover_bg | default: '#000000' }};
+        --btn-hover-color: {{ block.settings.button_hover_text | default: '#ffffff' }};
+
+        font-size: var(--btn-font-size);
+        color: var(--btn-text-color);
+        background-color: var(--btn-bg-color);
+      }
+
+      #block-btn-{{ block.id }}::before,
+      #block-btn-mobile-{{ block.id }}::before {
+        background-color: var(--btn-hover-bg);
+      }
+
+      #block-btn-{{ block.id }}:hover,
+      #block-btn-mobile-{{ block.id }}:hover {
+        color: var(--btn-hover-color);
+      }
+
+      #block-btn-{{ block.id }} {
+        justify-content: center;
+        {%- if block.settings.button_icon != blank -%}
+          gap: 18px;
+          padding: var(--btn-padding-y) var(--btn-padding-x) var(--btn-padding-y) calc(var(--btn-padding-x) + 17px);
+        {%- else -%}
+          padding: var(--btn-padding-y) var(--btn-padding-x);
+        {%- endif -%}
+      }
+
+      #block-btn-mobile-{{ block.id }} {
+        justify-content: center;
+      }
+
+      #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
+      #block-btn-mobile-{{ block.id }} .custom-top-bar__btn-icon {
+        {%- assign bar_default_color = block.settings.button_text_color | default: '#000000' -%}
+        {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
+        {%- if bar_default_brightness > 128 -%}
+          filter: invert(1);
+        {%- else -%}
+          filter: none;
+        {%- endif -%}
+      }
+
+      #block-btn-{{ block.id }}:hover .custom-top-bar__btn-icon,
+      #block-btn-mobile-{{ block.id }}:hover .custom-top-bar__btn-icon {
+        {%- assign bar_hover_color = block.settings.button_hover_text | default: '#ffffff' -%}
+        {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
+        {%- if bar_hover_brightness > 128 -%}
+          filter: invert(1);
+        {%- else -%}
+          filter: none;
+        {%- endif -%}
+      }
+
+      @media screen and (max-width: 768px) {
+        #block-btn-wrapper-mobile-{{ block.id }} {
+          display: flex;
+          width: 100%;
+          box-sizing: border-box;
+          justify-content: {{ block.settings.btn_align_mobile | default: 'center' }};
+        }
+        #block-btn-mobile-{{ block.id }} {
+          --btn-font-size: {{ block.settings.btn_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+          --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
+          --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
+          
+          font-size: var(--btn-font-size);
+          {%- if block.settings.button_icon != blank -%}
+            gap: 18px;
+            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob) var(--btn-padding-y-mob) calc(var(--btn-padding-x-mob) + 17px);
+          {%- else -%}
+            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob);
+          {%- endif -%}
+        }
+      }
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- for block in section.blocks -%}
+    {%- if block.settings.hide_on_desktop -%}
+      #block-logo-{{ block.id }},
+      #block-text-{{ block.id }},
+      #block-btn-wrapper-{{ block.id }} {
+        display: none !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.hide_on_mobile -%}
+      #block-logo-{{ block.id }},
+      #block-text-mobile-{{ block.id }},
+      #block-btn-wrapper-mobile-{{ block.id }} {
+        display: none !important;
+      }
+    {%- endif -%}
+  {%- endfor -%}
+</style>
+
+<script src="{{ 'custom-top-bar.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Custom Top Bar",
+  "tag": "section",
+  "class": "shopify-section-custom-top-bar",
+  "settings": [
+    {
+      "type": "color",
+      "id": "top_bar_bg",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "top_bar_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text (Fallback)",
+          "default": "My Shop"
+        },
+        {
+          "type": "header",
+          "content": "Fallback Text Size"
+        },
+        {
+          "type": "range",
+          "id": "logo_text_size_desktop",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop Font Size",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "logo_text_size_mobile",
+          "min": 10,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Font Size",
+          "default": 18
+        },
+        {
+          "type": "header",
+          "content": "Alignment Settings"
+        },
+        {
+          "type": "select",
+          "id": "logo_align_desktop",
+          "label": "Desktop Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "flex-start"
+        },
+        {
+          "type": "select",
+          "id": "logo_align_mobile",
+          "label": "Mobile Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        
+        {
+          "type": "header",
+          "content": "Fallback Text Color"
+        },
+        {
+          "type": "color",
+          "id": "logo_color",
+          "label": "Logo Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Padding Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_desktop",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_x_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 0
+        },
+            {
+          "type": "header",
+          "content": "Padding Mobile"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_mobile",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_x_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Responsive Visibility"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Large Screens (Desktop)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Announcement Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "top_bar_text",
+          "label": "Top Bar Announcement Text",
+          "default": "Free shipping on orders over $50!"
+        },
+        {
+          "type": "header",
+          "content": "Alignment Settings"
+        },
+        {
+          "type": "select",
+          "id": "text_align_desktop",
+          "label": "Desktop Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_align_mobile",
+          "label": "Mobile Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Announcement Text Sizes"
+        },
+        {
+          "type": "range",
+          "id": "text_size_desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop Font Size",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "text_size_mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Font Size",
+          "default": 12
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "text_bg",
+          "label": "Background Color",
+          "default": "transparent"
+        },
+        {
+          "type": "header",
+          "content": "Padding Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_desktop",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_x_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Padding Mobile"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_mobile",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_x_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Responsive Visibility"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Large Screens (Desktop)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "button_icon",
+          "label": "Button Icon"
+        },
+        {
+          "type": "header",
+          "content": "Alignment Settings"
+        },
+        {
+          "type": "select",
+          "id": "btn_align_desktop",
+          "label": "Desktop Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "flex-end"
+        },
+        {
+          "type": "select",
+          "id": "btn_align_mobile",
+          "label": "Mobile Alignment",
+          "options": [
+            { "value": "flex-start", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Button Font Sizes"
+        },
+        {
+          "type": "range",
+          "id": "btn_size_desktop",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop Font Size",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "btn_size_mobile",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile Font Size",
+          "default": 12
+        },
+        {
+          "type": "header",
+          "content": "Colors Settings"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Background Color",
+          "default": "#FFF544"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_bg",
+          "label": "Hover Background Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_text",
+          "label": "Hover Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Padding Desktop"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_desktop",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 9
+        },
+        {
+          "type": "range",
+          "id": "padding_x_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 21
+        },
+        {
+          "type": "header",
+          "content": "Padding Mobile"
+        },
+        {
+          "type": "range",
+          "id": "padding_y_mobile",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Y-Padding",
+          "default": 9
+        },
+        {
+          "type": "range",
+          "id": "padding_x_mobile",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "X-Padding",
+          "default": 21
+        },
+        {
+          "type": "header",
+          "content": "Responsive Visibility"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Large Screens (Desktop)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Top Bar",
+      "category": "Test Sections",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

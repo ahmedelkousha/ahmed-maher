@@ -1,0 +1,554 @@
+<section id="custom-text-{{ section.id }}" class="custom-text-section">
+  <div class="custom-text-section__container">
+    {% liquid
+      # Setup dual layout content structures by falling back to desktop copies if mobile specific variants are not exist
+      assign title_desktop = section.settings.title
+      assign title_mobile = section.settings.title_mobile | default: title_desktop
+      assign text_desktop = section.settings.text
+      assign text_mobile = section.settings.text_mobile | default: text_desktop
+    %}
+
+    {% comment %} Heading Container: renders both desktop and mobile variants to be conditionally toggled in stylesheets {% endcomment %}
+    {% if title_desktop != blank or title_mobile != blank %}
+      <h2 class="custom-text-section__title">
+        {% if title_desktop != blank %}
+          <span class="custom-text-desktop">{{ title_desktop }}</span>
+        {% endif %}
+        {% if title_mobile != blank %}
+          <span class="custom-text-mobile">{{ title_mobile }}</span>
+        {% endif %}
+      </h2>
+    {% endif %}
+
+    {% comment %} Body Text Container: wraps the rich-text copy blocks and toggles visibility based on screen width {% endcomment %}
+    {% if text_desktop != blank or text_mobile != blank %}
+      <div class="custom-text-section__text">
+        {% if text_desktop != blank %}
+          <div class="custom-text-desktop">{{ text_desktop }}</div>
+        {% endif %}
+        {% if text_mobile != blank %}
+          <div class="custom-text-mobile">{{ text_mobile }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} Call-To-Action Button: renders a styled button with optional custom leading graphic / icon {% endcomment %}
+    {% if section.settings.button_text != blank %}
+      <div class="custom-text-section__btn-wrapper">
+        <a href="{{ section.settings.button_link | default: '#' }}" class="custom-text-section__btn">
+          {{ section.settings.button_text }}
+          {% if section.settings.button_icon != blank %}
+            <img
+              src="{{ section.settings.button_icon | image_url: width: 24 }}"
+              alt=""
+              class="custom-text-section__btn-icon"
+              width="{{ section.settings.button_icon.width }}"
+              height="{{ section.settings.button_icon.height }}"
+            >
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{{ 'custom-text-container.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #custom-text-{{ section.id }} {
+    --bg-color-desktop: {{ section.settings.background_color_desktop | default: '#ffffff' }};
+    --bg-color-mobile: {{ section.settings.background_color_mobile | default: section.settings.background_color_desktop | default: '#ffffff' }};
+    
+    --padding-top-desktop: {{ section.settings.padding_top_desktop | default: 60 }}px;
+    --padding-right-desktop: {{ section.settings.padding_right_desktop | default: 40 }}px;
+    --padding-bottom-desktop: {{ section.settings.padding_bottom_desktop | default: 60 }}px;
+    --padding-left-desktop: {{ section.settings.padding_left_desktop | default: 40 }}px;
+
+    --padding-top-mobile: {{ section.settings.padding_top_mobile | default: 40 }}px;
+    --padding-right-mobile: {{ section.settings.padding_right_mobile | default: 20 }}px;
+    --padding-bottom-mobile: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+    --padding-left-mobile: {{ section.settings.padding_left_mobile | default: 20 }}px;
+
+    --btn-bg: {{ section.settings.btn_bg_color | default: '#000000' }};
+    --btn-color: {{ section.settings.btn_text_color | default: '#ffffff' }};
+    --btn-hover-bg: {{ section.settings.btn_hover_bg | default: '#FFF544' }};
+    --btn-hover-color: {{ section.settings.btn_hover_color | default: '#000000' }};
+
+    --btn-size-desktop: {{ section.settings.btn_font_size_desktop | default: 16 }}px;
+    --btn-size-mobile: {{ section.settings.btn_font_size_mobile | default: 14 }}px;
+    
+    --btn-pad-y-desktop: {{ section.settings.btn_padding_y_desktop | default: 12 }}px;
+    --btn-pad-x-desktop: {{ section.settings.btn_padding_x_desktop | default: 30 }}px;
+    --btn-pad-y-mobile: {{ section.settings.btn_padding_y_mobile | default: 10 }}px;
+    --btn-pad-x-mobile: {{ section.settings.btn_padding_x_mobile | default: 24 }}px;
+
+    --heading-align-desktop: {{ section.settings.heading_alignment_desktop | default: 'center' }};
+    --heading-size-desktop: {{ section.settings.heading_size_desktop | default: 40 }}px;
+    --heading-color-desktop: {{ section.settings.heading_color_desktop | default: '#000000' }};
+    --heading-align-mobile: {{ section.settings.heading_alignment_mobile | default: 'center' }};
+    --heading-size-mobile: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    --heading-color-mobile: {{ section.settings.heading_color_mobile | default: section.settings.heading_color_desktop | default: '#000000' }};
+    
+    --text-align-desktop: {{ section.settings.text_alignment_desktop | default: 'center' }};
+    --text-size-desktop: {{ section.settings.text_size_desktop | default: 18 }}px;
+    --text-color-desktop: {{ section.settings.text_color_desktop | default: '#333333' }};
+    --text-align-mobile: {{ section.settings.text_alignment_mobile | default: 'center' }};
+    --text-size-mobile: {{ section.settings.text_size_mobile | default: 16 }}px;
+    --text-color-mobile: {{ section.settings.text_color_mobile | default: section.settings.text_color_desktop | default: '#333333' }};
+
+    --btn-wrapper-align-desktop: {{ section.settings.heading_alignment_desktop | default: 'center' | replace: 'left', 'flex-start' | replace: 'right', 'flex-end' }};
+    --btn-wrapper-align-mobile: {{ section.settings.heading_alignment_mobile | default: 'center' | replace: 'left', 'flex-start' | replace: 'right', 'flex-end' }};
+    
+    --container-width: {{ section.settings.container_width_desktop | default: 1200 }}px;
+  }
+
+  /* Interactive state styling for the Call-to-Action slide transitions as in figma design */
+  #custom-text-{{ section.id }} .custom-text-section__btn:hover {
+    color: var(--btn-hover-color);
+  }
+  #custom-text-{{ section.id }} .custom-text-section__btn::before {
+    background-color: var(--btn-hover-bg);
+  }
+
+  /* Padding adjustments to ensure the arrow icon maintains balanced whitespace inside the button */
+  #custom-text-{{ section.id }} .custom-text-section__btn {
+    justify-content: center;
+    {%- if section.settings.button_icon != blank -%}
+      gap: 18px;
+      padding: var(--btn-pad-y-desktop) var(--btn-pad-x-desktop) var(--btn-pad-y-desktop) calc(var(--btn-pad-x-desktop) + 17px);
+    {%- else -%}
+      padding: var(--btn-pad-y-desktop) var(--btn-pad-x-desktop);
+    {%- endif -%}
+  }
+
+  @media screen and (max-width: 768px) {
+    #custom-text-{{ section.id }} .custom-text-section__btn {
+      {%- if section.settings.button_icon != blank -%}
+        padding: var(--btn-pad-y-mobile) var(--btn-pad-x-mobile) var(--btn-pad-y-mobile) calc(var(--btn-pad-x-mobile) + 17px);
+      {%- else -%}
+        padding: var(--btn-pad-y-mobile) var(--btn-pad-x-mobile);
+      {%- endif -%}
+    }
+  }
+
+  /* Invert the button icon color dynamically based on text color brightness to ensure high accessibility contrast */
+  #custom-text-{{ section.id }} .custom-text-section__btn-icon {
+    {%- assign bar_default_color = section.settings.btn_text_color | default: '#ffffff' -%}
+    {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
+    {%- if bar_default_brightness > 128 -%}
+      filter: invert(1);
+    {%- else -%}
+      filter: none;
+    {%- endif -%}
+  }
+
+  /* Invert the icon color on hover based on the hover background contrast settings as in figma design */
+  #custom-text-{{ section.id }} .custom-text-section__btn:hover .custom-text-section__btn-icon {
+    {%- assign bar_hover_color = section.settings.btn_hover_color | default: '#000000' -%}
+    {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
+    {%- if bar_hover_brightness > 128 -%}
+      filter: invert(1);
+    {%- else -%}
+      filter: none;
+    {%- endif -%}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Text Container",
+  "tag": "section",
+  "class": "shopify-section-custom-text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading Text",
+      "default": "Our Philosophy"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>We design sustainable, high-quality products built to last. Our mission is to combine visual excellence with utility to elevate your daily routines.</p>"
+    },
+    {
+      "type": "text",
+      "id": "title_mobile",
+      "label": "Heading Text (Mobile)",
+      "info": "Leave blank to use Desktop heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text_mobile",
+      "label": "Body Text (Mobile)",
+      "info": "Leave blank to use Desktop body text"
+    },
+    {
+      "type": "header",
+      "content": "Heading (Desktop)"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment_desktop",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 16,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "heading_color_desktop",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Heading (Mobile)"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color_mobile",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Body Text (Desktop)"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_desktop",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "text_color_desktop",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Body Text (Mobile)"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color_mobile",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "button_icon",
+      "label": "Button Icon"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover_bg",
+      "label": "Hover Background",
+      "default": "#FFF544"
+    },
+    {
+      "type": "color",
+      "id": "btn_hover_color",
+      "label": "Hover Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Font Sizes"
+    },
+    {
+      "type": "range",
+      "id": "btn_font_size_desktop",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "btn_font_size_mobile",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Padding Desktop"
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_y_desktop",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Y-Padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_x_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "X-Padding",
+      "default": 30
+    },
+    
+    {
+      "type": "header",
+      "content": "Padding Mobile"
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_y_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Y-Padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "btn_padding_x_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "X-Padding",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width_desktop",
+      "min": 400,
+      "max": 1440,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width (Desktop)",
+      "default": 1200
+    },
+    {
+      "type": "color",
+      "id": "background_color_desktop",
+      "label": "Background Color (Desktop)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color_mobile",
+      "label": "Background Color (Mobile)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "label": "Padding Right",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "label": "Padding Left",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Padding (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding Right",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding Left",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Text Container",
+      "category": "Test Sections"
+    }
+  ]
+}
+{% endschema %}
