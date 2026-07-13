@@ -94,7 +94,7 @@
             "button_link": "",
             "btn_bg_color": "#000000",
             "btn_text_color": "#ffffff",
-            "btn_hover_bg": "#FFF544",
+            "btn_hover_bg": "#fff544",
             "btn_hover_color": "#000000",
             "btn_font_size_desktop": 16,
             "btn_font_size_mobile": 14,
@@ -120,6 +120,9 @@
       "block_order": [
         "text_box_Fy3Wng",
         "image_dHTbHd"
+      ],
+      "custom_css": [
+        "section .custom-split__img{width: 100%;}"
       ],
       "name": "Custom Split Container",
       "settings": {
@@ -168,7 +171,7 @@
             "button_icon": "shopify://shop_images/arrow.png",
             "btn_bg_color": "#000000",
             "btn_text_color": "#ffffff",
-            "btn_hover_bg": "#FFF544",
+            "btn_hover_bg": "#fff544",
             "btn_hover_color": "#000000",
             "btn_font_size_desktop": 16,
             "btn_font_size_mobile": 14,
@@ -229,7 +232,7 @@
         "button_link": "",
         "btn_bg_color": "#000000",
         "btn_text_color": "#ffffff",
-        "btn_hover_bg": "#FFF544",
+        "btn_hover_bg": "#fff544",
         "btn_hover_color": "#000000",
         "btn_font_size_desktop": 16,
         "btn_font_size_mobile": 14,
@@ -238,8 +241,8 @@
         "btn_padding_y_mobile": 10,
         "btn_padding_x_mobile": 24,
         "container_width_desktop": 1200,
-        "background_color_desktop": "#F5F5F5",
-        "background_color_mobile": "#F5F5F5",
+        "background_color_desktop": "#f5f5f5",
+        "background_color_mobile": "#f5f5f5",
         "padding_top_desktop": 10,
         "padding_right_desktop": 10,
         "padding_bottom_desktop": 10,
