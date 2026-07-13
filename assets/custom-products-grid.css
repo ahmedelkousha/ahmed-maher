@@ -1,0 +1,598 @@
+  .custom-products-grid {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  /* Heading Styling: typography rules and margins for the product section heading */
+  .custom-products-grid__title {
+    font-weight: 400;
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .custom-products-grid__container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .custom-products-grid__items {
+    display: grid;
+    grid-template-columns: repeat(var(--columns-desktop, 4), 1fr);
+    gap: var(--gap-desktop, 24px);
+  }
+
+  /* Product Card Styling: layout, color, background-color and shadow */
+  .custom-product-card {
+    background-color: var(--card-bg);
+    color: var(--card-text-color);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .custom-product-card__media {
+    position: relative;
+    padding-bottom: 100%;
+    width: 100%;
+    background-color: #f7f7f7;
+    overflow: hidden;
+  }
+
+  .custom-product-card__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .custom-product-card:hover .custom-product-card__img {
+    transform: scale(1.05);
+  }
+
+  /* Quick View Icon: the interactive plus sign overlaying the product thumbnail dynamically through metafields in shopify */
+  .custom-product-card__quick-add-trigger {
+    position: absolute;
+    bottom: var(--plus-pos-bottom, 16px);
+    right: var(--plus-pos-right, 16px);
+    left: var(--plus-pos-left, auto);
+    top: var(--plus-pos-top, auto);
+    transform: var(--plus-pos-transform, none);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: var(--btn-plus-color);
+    color: var(--btn-plus-bg);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    padding: 0px;
+  }
+
+
+  .custom-quick-view-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s;
+  }
+
+  .custom-quick-view-modal.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .custom-quick-view-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .custom-quick-view-modal__content {
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+    max-width: 311px;
+    max-height: auto;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.2s ease;
+    z-index: 10001;
+    padding: 30px 16px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-sizing: border-box;
+  }
+
+  .custom-quick-view-modal.is-active .custom-quick-view-modal__content {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .custom-quick-view-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+  }
+
+  .custom-quick-view-modal__close:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
+  }
+
+  /* Modal Row 1: splits product image with container includes title, price, and description in a side-by-side layout */
+  .custom-quick-view__first-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .custom-quick-view__image-container {
+    flex: 0 0 40%;
+    max-width: 120px;
+    overflow: hidden;
+    background-color: #f7f7f7;
+    position: relative;
+    padding-bottom: 60%;
+  }
+
+  .custom-quick-view__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .custom-quick-view__info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .custom-quick-view__title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: #000000;
+  }
+
+  .custom-quick-view__price-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .custom-quick-view__price {
+    font-size: 12px;
+    font-weight: 400;
+    color: #000000;
+  }
+
+  .custom-quick-view__compare-price {
+    font-size: 12px;
+    text-decoration: line-through;
+    color: #888888;
+  }
+
+  .custom-quick-view__description {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #666666;
+  }
+
+  /* Modal Row 2: contains colors and sizes variants selectors as shown in figma design */
+  .custom-quick-view__second-row {
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    padding: 8px 0;
+  }
+
+  .custom-quick-view-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .custom-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .custom-option-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+  }
+
+  .custom-option-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .custom-option-value {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .custom-option-value input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .custom-option-value-text {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: #fff;
+    color: #333;
+  }
+
+  .custom-option-value input[type="radio"]:checked+.custom-option-value-text {
+    border-color: #000;
+    background-color: #000;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .custom-option-value:hover .custom-option-value-text {
+    border-color: #888;
+  }
+
+  .custom-option-values--color {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    z-index: 1;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    background-color: #ffffff;
+    width: 100%;
+  }
+
+  .custom-color-indicator {
+    position: absolute;
+    background: #000000;
+    top: 0;
+    bottom: 0;
+    width: calc(100% / var(--total-options, 1));
+    left: calc(var(--active-index, 0) * (100% / var(--total-options, 1)));
+    transition: left 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 1;
+  }
+
+  .custom-option-values--color .custom-option-value {
+    position: relative;
+    flex: 1 1 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+    min-height: 40px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-option-values--color .custom-option-value:not(:first-of-type) {
+    border-left: 1px solid #e0e0e0;
+  }
+
+  .custom-color-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    z-index: 3;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .custom-option-values--color .custom-option-value input[type="radio"]:checked+.custom-color-strip+.custom-option-value-text {
+    color: #ffffff !important;
+  }
+
+  .custom-option-values--color .custom-option-value-text {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 8px 12px 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: color 0.3s ease;
+    z-index: 2;
+  }
+
+  /* Modal Row 3: button styles for cart submission (add to cart) action and sold-out button state */
+  .custom-quick-view__third-row {
+    margin-top: 8px;
+  }
+
+  .custom-quick-view-submit {
+    position: relative;
+    width: 100%;
+    padding: 16px 24px;
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-quick-view-submit:hover:not(:disabled) {
+    background-color: #222222;
+  }
+
+  .custom-quick-view-submit:disabled {
+    background: #e0e0e0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+  }
+
+  .custom-submit-arrow {
+    position: absolute;
+    right: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .custom-quick-view-submit:hover:not(:disabled) .custom-submit-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Dropdown Elements: stylings for the size variant dropdown container and animation rules */
+  .custom-dropdown-select {
+    position: relative;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .custom-dropdown-select__trigger {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #f7f7f7;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    text-align: left;
+    border-radius: 0;
+  }
+
+  .custom-dropdown-select__trigger-text {
+    flex-grow: 1;
+  }
+
+  .custom-dropdown-select__trigger-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .custom-dropdown-select.is-open .custom-dropdown-select__trigger-arrow {
+    transform: rotate(180deg);
+  }
+
+  .custom-dropdown-select__options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.2s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 20;
+    border: none;
+  }
+
+  .custom-dropdown-select.is-open .custom-dropdown-select__options {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .custom-dropdown-select__option {
+    padding: 12px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .custom-dropdown-select__option:hover {
+    background-color: #f7f7f7;
+  }
+
+  .custom-dropdown-select__option.is-selected {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  .custom-quick-view-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: custom-spin 0.6s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes custom-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+  /* Toast Alert Drawer: handles success slide-out animations */
+  .custom-cart-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background-color: var(--toast-bg);
+    color: var(--toast-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 9999;
+    width: 320px;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: inherit;
+  }
+
+  .custom-cart-toast.is-active {
+    transform: translateX(0);
+  }
+
+  .custom-cart-toast__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .custom-cart-toast__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .custom-cart-toast__checkmark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #10b981;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .custom-cart-toast__message {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .custom-cart-toast__footer {
+    display: flex;
+    gap: 12px;
+  }
+
+  .custom-cart-toast__link {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .custom-cart-toast__link:hover {
+    border-color: #000;
+    background-color: #f7f7f7;
+  }
+
+  .custom-cart-toast__link--checkout {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+  }
+
+  .custom-cart-toast__link--checkout:hover {
+    opacity: 0.9;
+    background-color: #000;
+  }
+
+  @media screen and (max-width: 768px) {
+    .custom-products-grid__items {
+      grid-template-columns: repeat(var(--columns-mobile, 2), 1fr);
+      gap: var(--gap-mobile, 12px);
+    }
+  }
