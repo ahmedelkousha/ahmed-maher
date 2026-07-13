@@ -122,7 +122,7 @@
         "image_dHTbHd"
       ],
       "custom_css": [
-        "section .custom-split__img{width: 100%;}"
+        "section .custom-split__img {width: 100%;}"
       ],
       "name": "Custom Split Container",
       "settings": {
