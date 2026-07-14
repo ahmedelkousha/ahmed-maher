@@ -268,10 +268,7 @@
       "type": "custom-products-grid",
       "custom_css": [
         "section .custom-products-grid__title {line-height: 120%; letter-spacing: 0px; font-family: \"Lustria\", serif;}",
-        "section .custom-products-grid {max-width: 1337px !important;}",
-        ".custom-product-card {overflow: hidden; display: flex; flex-direction: column; position: relative; width: 100%; max-width: 433px; aspect-ratio: 433 / 444; }",
-        " .custom-product-card__media {position: relative; flex-grow: 1; width: 100%; overflow: hidden; }",
-        " .custom-product-card__img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }"
+        "section .custom-products-grid {max-width: 1440px !important;}"
       ],
       "name": "Custom Products Grid",
       "settings": {
@@ -303,9 +300,9 @@
         "padding_bottom_desktop": 51,
         "padding_left_desktop": 52,
         "padding_top_mobile": 12,
-        "padding_right_mobile": 8,
+        "padding_right_mobile": 50,
         "padding_bottom_mobile": 12,
-        "padding_left_mobile": 8
+        "padding_left_mobile": 50
       }
     }
   },
