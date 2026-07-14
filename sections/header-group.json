@@ -150,10 +150,14 @@
             "button_text_color": "#000000",
             "button_hover_bg": "#000000",
             "button_hover_text": "#ffffff",
-            "padding_y_desktop": 9,
-            "padding_x_desktop": 21,
-            "padding_y_mobile": 12,
-            "padding_x_mobile": 34,
+            "padding_top_desktop": 11,
+            "padding_right_desktop": 22,
+            "padding_bottom_desktop": 11,
+            "padding_left_desktop": 41,
+            "padding_top_mobile": 9,
+            "padding_right_mobile": 21,
+            "padding_bottom_mobile": 9,
+            "padding_left_mobile": 21,
             "hide_on_desktop": false,
             "hide_on_mobile": false
           }
