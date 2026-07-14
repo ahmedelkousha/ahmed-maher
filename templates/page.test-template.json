@@ -154,7 +154,7 @@
             "heading_size_mobile": 36,
             "subheading_size_mobile": 16,
             "alignment_desktop": "flex-start",
-            "width_desktop": 40,
+            "width_desktop": 36,
             "gap_desktop": 40,
             "padding_top_desktop": 40,
             "padding_right_desktop": 0,
@@ -198,7 +198,7 @@
         "image_ik4Eke"
       ],
       "custom_css": [
-        "section .custom-split__container{margin-top: -12px;}"
+        "section .custom-split__container {margin-top: -12px;}"
       ],
       "name": "Custom Split Container",
       "settings": {
