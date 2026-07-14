@@ -177,7 +177,7 @@
             "btn_hover_color": "#000000",
             "btn_font_size_desktop": 16,
             "btn_font_size_mobile": 14,
-            "btn_padding_y_desktop": 13,
+            "btn_padding_y_desktop": 12,
             "btn_padding_x_desktop": 36,
             "btn_padding_y_mobile": 9,
             "btn_padding_x_mobile": 21,
