@@ -200,7 +200,8 @@
         "image_ik4Eke"
       ],
       "custom_css": [
-        "section .custom-split__container {margin-top: -12px;}"
+        "section .custom-split__container {margin-top: -12px;}",
+        "section .custom-split__heading {font-weight: 500;}"
       ],
       "name": "Custom Split Container",
       "settings": {
