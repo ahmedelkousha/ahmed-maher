@@ -206,7 +206,7 @@
       ],
       "name": "Custom Split Container",
       "settings": {
-        "section_padding_left_desktop": 0,
+        "section_padding_left_desktop": 4,
         "section_padding_right_desktop": 0,
         "container_width_desktop": 1440,
         "background_color_desktop": "#ffffff",
