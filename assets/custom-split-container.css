@@ -49,20 +49,30 @@
 
   .custom-split__heading {
     margin: 0;
-    font-weight: 500;
-    line-height: 110%;
+    font-family: var(--font-h2--family);
+    font-weight: var(--font-h2--weight);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+    font-style: var(--font-h2--style);
   }
 
   .custom-split__subheading {
-    line-height: 1.6;
-    font-weight: 400;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+    line-height: var(--font-paragraph--line-height);
+    letter-spacing: var(--font-paragraph--letter-spacing);
+    text-transform: var(--font-paragraph--case);
   }
 
   /* Interactive button styles, handling slide hover transitions and transitions as in figma design */
   .custom-split__btn {
     display: inline-flex;
     align-items: center;
-    font-weight: 400;
+    font-family: var(--button-font-family-primary);
+    text-transform: var(--button-text-case-primary);
+    font-weight: var(--font-paragraph--weight);
+    letter-spacing: var(--font-paragraph--letter-spacing);
     text-decoration: none;
     position: relative;
     overflow: hidden;

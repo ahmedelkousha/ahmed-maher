@@ -74,8 +74,8 @@
     --btn-hover-bg: {{ section.settings.btn_hover_bg | default: '#FFF544' }};
     --btn-hover-color: {{ section.settings.btn_hover_color | default: '#000000' }};
 
-    --btn-size-desktop: {{ section.settings.btn_font_size_desktop | default: 16 }}px;
-    --btn-size-mobile: {{ section.settings.btn_font_size_mobile | default: 14 }}px;
+    --btn-size-desktop: calc(var(--font-paragraph--size) * ({{ section.settings.btn_font_size_desktop | default: 16 }} / 16.0));
+    --btn-size-mobile: calc(var(--font-paragraph--size) * ({{ section.settings.btn_font_size_mobile | default: 14 }} / 14.0));
     
     --btn-pad-y-desktop: {{ section.settings.btn_padding_y_desktop | default: 12 }}px;
     --btn-pad-x-desktop: {{ section.settings.btn_padding_x_desktop | default: 30 }}px;
@@ -83,17 +83,17 @@
     --btn-pad-x-mobile: {{ section.settings.btn_padding_x_mobile | default: 24 }}px;
 
     --heading-align-desktop: {{ section.settings.heading_alignment_desktop | default: 'center' }};
-    --heading-size-desktop: {{ section.settings.heading_size_desktop | default: 40 }}px;
+    --heading-size-desktop: calc(var(--font-h2--size) * ({{ section.settings.heading_size_desktop | default: 40 }} / 40.0));
     --heading-color-desktop: {{ section.settings.heading_color_desktop | default: '#000000' }};
     --heading-align-mobile: {{ section.settings.heading_alignment_mobile | default: 'center' }};
-    --heading-size-mobile: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    --heading-size-mobile: calc(var(--font-h2--size) * ({{ section.settings.heading_size_mobile | default: 28 }} / 28.0));
     --heading-color-mobile: {{ section.settings.heading_color_mobile | default: section.settings.heading_color_desktop | default: '#000000' }};
     
     --text-align-desktop: {{ section.settings.text_alignment_desktop | default: 'center' }};
-    --text-size-desktop: {{ section.settings.text_size_desktop | default: 18 }}px;
+    --text-size-desktop: calc(var(--font-paragraph--size) * ({{ section.settings.text_size_desktop | default: 18 }} / 18.0));
     --text-color-desktop: {{ section.settings.text_color_desktop | default: '#333333' }};
     --text-align-mobile: {{ section.settings.text_alignment_mobile | default: 'center' }};
-    --text-size-mobile: {{ section.settings.text_size_mobile | default: 16 }}px;
+    --text-size-mobile: calc(var(--font-paragraph--size) * ({{ section.settings.text_size_mobile | default: 16 }} / 16.0));
     --text-color-mobile: {{ section.settings.text_color_mobile | default: section.settings.text_color_desktop | default: '#333333' }};
 
     --btn-wrapper-align-desktop: {{ section.settings.heading_alignment_desktop | default: 'center' | replace: 'left', 'flex-start' | replace: 'right', 'flex-end' }};

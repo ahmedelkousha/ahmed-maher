@@ -145,7 +145,7 @@
         min-width: 520px;
       }
       #block-{{ block.id }} .custom-split__heading {
-        font-size: {{ block.settings.heading_size_desktop | default: 70 | divided_by: 16.0 }}rem;
+        font-size: calc(var(--font-h2--size) * ({{ block.settings.heading_size_desktop | default: 70 }} / 70.0));
       }
       @media screen and (min-width: 769px) and (max-width: 1280px) {
         #block-{{ block.id }} .custom-split__heading {
@@ -160,7 +160,7 @@
       }
 
       #block-{{ block.id }} .custom-split__subheading {
-        font-size: 1.25rem;
+        font-size: calc(var(--font-paragraph--size) * 1.25);
         font-weight: 400;
         letter-spacing: -0.03125rem;
       }
@@ -175,7 +175,7 @@
         {% endif %}
       }
       #block-{{ block.id }} .custom-split__btn {
-        font-size: {{ block.settings.btn_font_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_font_size_desktop | default: 16 }} / 16.0));
         background-color: {{ block.settings.btn_bg_color | default: '#000000' }};
         color: {{ block.settings.btn_text_color | default: '#ffffff' }};
       }
@@ -223,10 +223,10 @@
           width: 100%;
         }
         #block-{{ block.id }} .custom-split__heading {
-          font-size: {{ block.settings.heading_size_mobile | default: 36 | divided_by: 16.0 }}rem;
+          font-size: calc(var(--font-h2--size) * ({{ block.settings.heading_size_mobile | default: 36 }} / 36.0));
         }
         #block-{{ block.id }} .custom-split__subheading {
-          font-size: {{ block.settings.subheading_size_mobile | default: 16 | divided_by: 16.0 }}rem;
+          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.subheading_size_mobile | default: 16 }} / 16.0));
         }
         #block-{{ block.id }} .custom-split__btn {
           {% if block.settings.button_icon != blank %}
@@ -237,7 +237,7 @@
           {% endif %}
         }
         #block-{{ block.id }} .custom-split__btn {
-          font-size: {{ block.settings.btn_font_size_mobile | default: 14 | divided_by: 16.0 }}rem;
+          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_font_size_mobile | default: 14 }} / 14.0));
         }
       }
     {% endif %}

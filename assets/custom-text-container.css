@@ -55,8 +55,12 @@
   /* Formatting rules for section heading including line heights and alignment variables */
   .custom-text-section__title {
     margin: 0;
-    font-weight: 700;
-    line-height: 1.2;
+    font-family: var(--font-h2--family);
+    font-weight: var(--font-h2--weight);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+    font-style: var(--font-h2--style);
     text-align: var(--heading-align-desktop);
     font-size: var(--heading-size-desktop);
     color: var(--heading-color-desktop);
@@ -64,7 +68,11 @@
 
   /* Formatting properties for paragraphs, handling font sizes and paragraph margins */
   .custom-text-section__text {
-    line-height: 1.6;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+    line-height: var(--font-paragraph--line-height);
+    letter-spacing: var(--font-paragraph--letter-spacing);
+    text-transform: var(--font-paragraph--case);
     text-align: var(--text-align-desktop);
     font-size: var(--text-size-desktop);
     color: var(--text-color-desktop);
@@ -89,7 +97,10 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-weight: 600;
+    font-family: var(--button-font-family-primary);
+    text-transform: var(--button-text-case-primary);
+    font-weight: var(--font-paragraph--weight);
+    letter-spacing: var(--font-paragraph--letter-spacing);
     border: none;
     border-radius: 4px;
     cursor: pointer;
