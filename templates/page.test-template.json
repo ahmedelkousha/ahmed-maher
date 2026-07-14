@@ -202,7 +202,7 @@
       "custom_css": [
         "section .custom-split__container {margin-top: -12px;}",
         "section .custom-split__heading {font-weight: 500;}",
-        "section .custom-split__subheading p {line-height: 140%; letter-spacing: 0px;}"
+        "section .custom-split__subheading p {line-height: 140%; letter-spacing: 0px; font-weight: 460;}"
       ],
       "name": "Custom Split Container",
       "settings": {
