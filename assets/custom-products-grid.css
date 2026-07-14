@@ -13,7 +13,7 @@
     letter-spacing: var(--font-h2--letter-spacing);
     text-transform: var(--font-h2--case);
     font-style: var(--font-h2--style);
-    margin-bottom: 32px;
+    margin-bottom: 30px;
   }
 
   .custom-products-grid__container {
