@@ -146,5 +146,8 @@
         "color2": "#DFDFDF"
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": []
   }
 }
