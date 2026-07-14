@@ -145,7 +145,11 @@
         min-width: 520px;
       }
       #block-{{ block.id }} .custom-split__heading {
-        font-size: calc(var(--font-h2--size) * ({{ block.settings.heading_size_desktop | default: 70 }} / 70.0));
+        {% if block.settings.use_global_font_size %}
+          font-size: var(--font-h2--size);
+        {% else %}
+          font-size: {{ block.settings.heading_size_desktop | default: 70 | divided_by: 16.0 }}rem;
+        {% endif %}
       }
       @media screen and (min-width: 769px) and (max-width: 1280px) {
         #block-{{ block.id }} .custom-split__heading {
@@ -160,9 +164,15 @@
       }
 
       #block-{{ block.id }} .custom-split__subheading {
-        font-size: calc(var(--font-paragraph--size) * 1.25);
-        font-weight: 400;
-        letter-spacing: -0.03125rem;
+        {% if block.settings.use_global_font_size %}
+          font-size: var(--font-paragraph--size);
+          font-weight: var(--font-paragraph--weight);
+          letter-spacing: var(--font-paragraph--letter-spacing);
+        {% else %}
+          font-size: {{ block.settings.subheading_size_desktop | default: 20 | divided_by: 16.0 }}rem;
+          font-weight: 400;
+          letter-spacing: -0.03125rem;
+        {% endif %}
       }
 
       /* Shape and position the main call-to-action button, leaving extra space if it includes a leading graphic or icon */
@@ -175,7 +185,11 @@
         {% endif %}
       }
       #block-{{ block.id }} .custom-split__btn {
-        font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_font_size_desktop | default: 16 }} / 16.0));
+        {% if block.settings.use_global_font_size %}
+          font-size: var(--font-paragraph--size);
+        {% else %}
+          font-size: {{ block.settings.btn_font_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        {% endif %}
         background-color: {{ block.settings.btn_bg_color | default: '#000000' }};
         color: {{ block.settings.btn_text_color | default: '#ffffff' }};
       }
@@ -223,10 +237,18 @@
           width: 100%;
         }
         #block-{{ block.id }} .custom-split__heading {
-          font-size: calc(var(--font-h2--size) * ({{ block.settings.heading_size_mobile | default: 36 }} / 36.0));
+          {% if block.settings.use_global_font_size %}
+            font-size: var(--font-h2--size);
+          {% else %}
+            font-size: {{ block.settings.heading_size_mobile | default: 36 | divided_by: 16.0 }}rem;
+          {% endif %}
         }
         #block-{{ block.id }} .custom-split__subheading {
-          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.subheading_size_mobile | default: 16 }} / 16.0));
+          {% if block.settings.use_global_font_size %}
+            font-size: var(--font-paragraph--size);
+          {% else %}
+            font-size: {{ block.settings.subheading_size_mobile | default: 16 | divided_by: 16.0 }}rem;
+          {% endif %}
         }
         #block-{{ block.id }} .custom-split__btn {
           {% if block.settings.button_icon != blank %}
@@ -237,7 +259,11 @@
           {% endif %}
         }
         #block-{{ block.id }} .custom-split__btn {
-          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_font_size_mobile | default: 14 }} / 14.0));
+          {% if block.settings.use_global_font_size %}
+            font-size: var(--font-paragraph--size);
+          {% else %}
+            font-size: {{ block.settings.btn_font_size_mobile | default: 14 | divided_by: 16.0 }}rem;
+          {% endif %}
         }
       }
     {% endif %}
@@ -432,6 +458,12 @@
         {
           "type": "header",
           "content": "Desktop Typography"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_global_font_size",
+          "label": "Use global typography settings",
+          "default": false
         },
         {
           "type": "range",
@@ -685,7 +717,7 @@
           "label": "Font Size (Mobile)",
           "default": 14
         },
-         {
+        {
           "type": "header",
           "content": "Padding Desktop"
         },
@@ -709,7 +741,7 @@
           "label": "X-Padding",
           "default": 21
         },
-         {
+        {
           "type": "header",
           "content": "Padding Mobile"
         },

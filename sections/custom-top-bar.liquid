@@ -130,182 +130,198 @@
 {{ 'custom-top-bar.css' | asset_url | stylesheet_tag }}
 
 <style>
-    #custom-top-bar-section-{{ section.id }} {
-      position: relative;
-      --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
-      --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
-      --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
-      --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
-    }
+  #custom-top-bar-section-{{ section.id }} {
+    position: relative;
+    --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
+    --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
+    --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
+    --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
+  }
 
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'logo' -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'logo' -%}
+      #block-logo-{{ block.id }} {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: {{ block.settings.logo_align_desktop | default: 'flex-start' }};
+        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+      }
+      #block-logo-{{ block.id }} .custom-top-bar__logo-text {
+        font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
+        color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
+      }
+
+      @media screen and (max-width: 768px) {
         #block-logo-{{ block.id }} {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          box-sizing: border-box;
-          justify-content: {{ block.settings.logo_align_desktop | default: 'flex-start' }};
-          padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+          justify-content: {{ block.settings.logo_align_mobile | default: 'center' }};
+          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
         }
         #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-          font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
-          color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
+          font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
         }
+      }
 
-        @media screen and (max-width: 768px) {
-          #block-logo-{{ block.id }} {
-            justify-content: {{ block.settings.logo_align_mobile | default: 'center' }};
-            padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
-          }
-          #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-            font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
-          }
-        }
+    {%- elsif block.type == 'text' -%}
+      #block-text-{{ block.id }} {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        font-family: var(--font-paragraph--family);
+        font-weight: var(--font-paragraph--weight);
+        box-sizing: border-box;
+        line-height: var(--font-paragraph--line-height);
+        letter-spacing: var(--font-paragraph--letter-spacing);
+        text-transform: var(--font-paragraph--case);
+        color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
+        background-color: {{ block.settings.text_bg | default: 'transparent' }};
+        justify-content: {{ block.settings.text_align_desktop | default: 'center' }};
+        text-align: {{ block.settings.text_align_desktop | default: 'center' }};
+        {% if block.settings.use_global_font_size %}
+          font-size: var(--font-paragraph--size);
+        {% else %}
+          font-size: {{ block.settings.text_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        {% endif %}
+        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+      }
 
-      {%- elsif block.type == 'text' -%}
-        #block-text-{{ block.id }} {
+      @media screen and (max-width: 768px) {
+        #block-text-mobile-{{ block.id }} {
           display: flex;
-          align-items: center;
-          width: 100%;
-          font-family: var(--font-paragraph--family);
-          font-weight: var(--font-paragraph--weight);
-          box-sizing: border-box;
-          line-height: var(--font-paragraph--line-height);
-          letter-spacing: var(--font-paragraph--letter-spacing);
-          text-transform: var(--font-paragraph--case);
+          justify-content: {{ block.settings.text_align_mobile | default: 'center' }};
+          text-align: {{ block.settings.text_align_mobile | default: 'center' }};
+          {% if block.settings.use_global_font_size %}
+            font-size: var(--font-paragraph--size);
+          {% else %}
+            font-size: {{ block.settings.text_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+          {% endif %}
+          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
           color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
           background-color: {{ block.settings.text_bg | default: 'transparent' }};
-          justify-content: {{ block.settings.text_align_desktop | default: 'center' }};
-          text-align: {{ block.settings.text_align_desktop | default: 'center' }};
-          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.text_size_desktop | default: 16 }} / 16.0));
-          padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
+          width: 100%;
+          box-sizing: border-box;
+          margin-bottom: 20px;
         }
+      }
 
-        @media screen and (max-width: 768px) {
-          #block-text-mobile-{{ block.id }} {
-            display: flex;
-            justify-content: {{ block.settings.text_align_mobile | default: 'center' }};
-            text-align: {{ block.settings.text_align_mobile | default: 'center' }};
-            font-size: calc(var(--font-paragraph--size) * ({{ block.settings.text_size_mobile | default: 12 }} / 12.0));
-            padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
-            color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
-            background-color: {{ block.settings.text_bg | default: 'transparent' }};
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-          }
-        }
+    {%- elsif block.type == 'button' -%}
+      #block-btn-wrapper-{{ block.id }} {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: {{ block.settings.btn_align_desktop | default: 'flex-end' }};
+      }
 
-      {%- elsif block.type == 'button' -%}
-        #block-btn-wrapper-{{ block.id }} {
+      #block-btn-{{ block.id }},
+      #block-btn-mobile-{{ block.id }} {
+        {% if block.settings.use_global_font_size %}
+          --btn-font-size: var(--font-paragraph--size);
+        {% else %}
+          --btn-font-size: {{ block.settings.btn_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+        {% endif %}
+        --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
+        --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
+        --btn-bg-color: {{ block.settings.button_bg_color | default: '#FFF544' }};
+        --btn-text-color: {{ block.settings.button_text_color | default: '#000000' }};
+        --btn-hover-bg: {{ block.settings.button_hover_bg | default: '#000000' }};
+        --btn-hover-color: {{ block.settings.button_hover_text | default: '#ffffff' }};
+
+        font-size: var(--btn-font-size);
+        color: var(--btn-text-color);
+        background-color: var(--btn-bg-color);
+      }
+
+      #block-btn-{{ block.id }}::before,
+      #block-btn-mobile-{{ block.id }}::before {
+        background-color: var(--btn-hover-bg);
+      }
+
+      #block-btn-{{ block.id }}:hover,
+      #block-btn-mobile-{{ block.id }}:hover {
+        color: var(--btn-hover-color);
+      }
+
+      #block-btn-{{ block.id }} {
+        justify-content: center;
+        {%- if block.settings.button_icon != blank -%}
+          gap: 18px;
+          padding: var(--btn-padding-y) var(--btn-padding-x) var(--btn-padding-y) calc(var(--btn-padding-x) + 17px);
+        {%- else -%}
+          padding: var(--btn-padding-y) var(--btn-padding-x);
+        {%- endif -%}
+      }
+
+      #block-btn-mobile-{{ block.id }} {
+        justify-content: center;
+      }
+
+      #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
+      #block-btn-mobile-{{ block.id }} .custom-top-bar__btn-icon {
+        {%- assign bar_default_color = block.settings.button_text_color | default: '#000000' -%}
+        {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
+        {%- if bar_default_brightness > 128 -%}
+          filter: invert(1);
+        {%- else -%}
+          filter: none;
+        {%- endif -%}
+      }
+
+      #block-btn-{{ block.id }}:hover .custom-top-bar__btn-icon,
+      #block-btn-mobile-{{ block.id }}:hover .custom-top-bar__btn-icon {
+        {%- assign bar_hover_color = block.settings.button_hover_text | default: '#ffffff' -%}
+        {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
+        {%- if bar_hover_brightness > 128 -%}
+          filter: invert(1);
+        {%- else -%}
+          filter: none;
+        {%- endif -%}
+      }
+
+      @media screen and (max-width: 768px) {
+        #block-btn-wrapper-mobile-{{ block.id }} {
           display: flex;
           width: 100%;
           box-sizing: border-box;
-          justify-content: {{ block.settings.btn_align_desktop | default: 'flex-end' }};
+          justify-content: {{ block.settings.btn_align_mobile | default: 'center' }};
         }
-
-        #block-btn-{{ block.id }},
         #block-btn-mobile-{{ block.id }} {
-          --btn-font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_size_desktop | default: 16 }} / 16.0));
-          --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
-          --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
-          --btn-bg-color: {{ block.settings.button_bg_color | default: '#FFF544' }};
-          --btn-text-color: {{ block.settings.button_text_color | default: '#000000' }};
-          --btn-hover-bg: {{ block.settings.button_hover_bg | default: '#000000' }};
-          --btn-hover-color: {{ block.settings.button_hover_text | default: '#ffffff' }};
+          {% if block.settings.use_global_font_size %}
+            --btn-font-size: var(--font-paragraph--size);
+          {% else %}
+            --btn-font-size: {{ block.settings.btn_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+          {% endif %}
+          --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
+          --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
 
           font-size: var(--btn-font-size);
-          color: var(--btn-text-color);
-          background-color: var(--btn-bg-color);
-        }
-
-        #block-btn-{{ block.id }}::before,
-        #block-btn-mobile-{{ block.id }}::before {
-          background-color: var(--btn-hover-bg);
-        }
-
-        #block-btn-{{ block.id }}:hover,
-        #block-btn-mobile-{{ block.id }}:hover {
-          color: var(--btn-hover-color);
-        }
-
-        #block-btn-{{ block.id }} {
-          justify-content: center;
           {%- if block.settings.button_icon != blank -%}
             gap: 18px;
-            padding: var(--btn-padding-y) var(--btn-padding-x) var(--btn-padding-y) calc(var(--btn-padding-x) + 17px);
+            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob) var(--btn-padding-y-mob) calc(var(--btn-padding-x-mob) + 17px);
           {%- else -%}
-            padding: var(--btn-padding-y) var(--btn-padding-x);
+            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob);
           {%- endif -%}
         }
+      }
+    {%- endif -%}
+  {%- endfor -%}
 
-        #block-btn-mobile-{{ block.id }} {
-          justify-content: center;
-        }
-
-        #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
-        #block-btn-mobile-{{ block.id }} .custom-top-bar__btn-icon {
-          {%- assign bar_default_color = block.settings.button_text_color | default: '#000000' -%}
-          {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
-          {%- if bar_default_brightness > 128 -%}
-            filter: invert(1);
-          {%- else -%}
-            filter: none;
-          {%- endif -%}
-        }
-
-        #block-btn-{{ block.id }}:hover .custom-top-bar__btn-icon,
-        #block-btn-mobile-{{ block.id }}:hover .custom-top-bar__btn-icon {
-          {%- assign bar_hover_color = block.settings.button_hover_text | default: '#ffffff' -%}
-          {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
-          {%- if bar_hover_brightness > 128 -%}
-            filter: invert(1);
-          {%- else -%}
-            filter: none;
-          {%- endif -%}
-        }
-
-        @media screen and (max-width: 768px) {
-          #block-btn-wrapper-mobile-{{ block.id }} {
-            display: flex;
-            width: 100%;
-            box-sizing: border-box;
-            justify-content: {{ block.settings.btn_align_mobile | default: 'center' }};
-          }
-          #block-btn-mobile-{{ block.id }} {
-            --btn-font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_size_mobile | default: 12 }} / 12.0));
-            --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
-            --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
-
-            font-size: var(--btn-font-size);
-            {%- if block.settings.button_icon != blank -%}
-              gap: 18px;
-              padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob) var(--btn-padding-y-mob) calc(var(--btn-padding-x-mob) + 17px);
-            {%- else -%}
-              padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob);
-            {%- endif -%}
-          }
-        }
-      {%- endif -%}
-    {%- endfor -%}
-
-    {%- for block in section.blocks -%}
-      {%- if block.settings.hide_on_desktop -%}
-        #block-logo-{{ block.id }},
-        #block-text-{{ block.id }},
-        #block-btn-wrapper-{{ block.id }} {
-          display: none !important;
-        }
-      {%- endif -%}
-      {%- if block.settings.hide_on_mobile -%}
-        #block-logo-{{ block.id }},
-        #block-text-mobile-{{ block.id }},
-        #block-btn-wrapper-mobile-{{ block.id }} {
-          display: none !important;
-        }
-      {%- endif -%}
-    {%- endfor -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.hide_on_desktop -%}
+      #block-logo-{{ block.id }},
+      #block-text-{{ block.id }},
+      #block-btn-wrapper-{{ block.id }} {
+        display: none !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.hide_on_mobile -%}
+      #block-logo-{{ block.id }},
+      #block-text-mobile-{{ block.id }},
+      #block-btn-wrapper-mobile-{{ block.id }} {
+        display: none !important;
+      }
+    {%- endif -%}
+  {%- endfor -%}
 </style>
 
 <script src="{{ 'custom-top-bar.js' | asset_url }}" defer="defer"></script>
@@ -511,6 +527,12 @@
           "default": "center"
         },
         {
+          "type": "checkbox",
+          "id": "use_global_font_size",
+          "label": "Use global typography settings",
+          "default": false
+        },
+        {
           "type": "header",
           "content": "Announcement Text Sizes"
         },
@@ -662,6 +684,12 @@
             { "value": "flex-end", "label": "Right" }
           ],
           "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_global_font_size",
+          "label": "Use global typography settings",
+          "default": false
         },
         {
           "type": "header",
