@@ -163,7 +163,7 @@
         "button_mJxKfk"
       ],
       "custom_css": [
-        "section .custom-top-bar__text{margin-left: -45px;}"
+        "section .custom-top-bar__text {font-weight: 400; letter-spacing: 0px; line-height: 13.42px; margin-right: 6.5%;}"
       ],
       "name": "Custom Top Bar",
       "settings": {
