@@ -157,7 +157,7 @@
             "subheading_size_mobile": 16,
             "alignment_desktop": "flex-start",
             "width_desktop": 38,
-            "gap_desktop": 54,
+            "gap_desktop": 50,
             "padding_top_desktop": 40,
             "padding_right_desktop": 0,
             "padding_bottom_desktop": 40,
