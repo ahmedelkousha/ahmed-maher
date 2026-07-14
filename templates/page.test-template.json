@@ -218,7 +218,7 @@
     "custom_text_container_DUJ6h8": {
       "type": "custom-text-container",
       "custom_css": [
-        "section .custom-text-section__text {font-weight: 470; line-height: 13.42px; letter-spacing: -0.25px;}"
+        "section .custom-text-section__text {font-weight: 460; line-height: 13.42px; letter-spacing: -0.25px;}"
       ],
       "name": "Custom Text Container",
       "settings": {
