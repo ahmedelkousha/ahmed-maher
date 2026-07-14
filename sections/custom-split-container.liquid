@@ -148,15 +148,15 @@
         {% if block.settings.use_global_font_size %}
           font-size: var(--font-h2--size);
         {% else %}
-          font-size: {{ block.settings.heading_size_desktop | default: 70 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.heading_size_desktop | default: 70 }}px;
         {% endif %}
       }
       @media screen and (min-width: 769px) and (max-width: 1280px) {
         #block-{{ block.id }} .custom-split__heading {
-          font-size: 3.5rem !important;
+          font-size: 56px !important;
         }
         #block-{{ block.id }} .custom-split__subheading {
-          font-size: 0.9rem !important;
+          font-size: 14.4px !important;
         }
         #block-{{ block.id }} {
           gap: 35px;
@@ -169,9 +169,9 @@
           font-weight: var(--font-paragraph--weight);
           letter-spacing: var(--font-paragraph--letter-spacing);
         {% else %}
-          font-size: {{ block.settings.subheading_size_desktop | default: 20 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.subheading_size_desktop | default: 20 }}px;
           font-weight: 400;
-          letter-spacing: -0.03125rem;
+          letter-spacing: -0.5px;
         {% endif %}
       }
 
@@ -188,7 +188,7 @@
         {% if block.settings.use_global_font_size %}
           font-size: var(--font-paragraph--size);
         {% else %}
-          font-size: {{ block.settings.btn_font_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.btn_font_size_desktop | default: 16 }}px;
         {% endif %}
         background-color: {{ block.settings.btn_bg_color | default: '#000000' }};
         color: {{ block.settings.btn_text_color | default: '#ffffff' }};
@@ -240,14 +240,14 @@
           {% if block.settings.use_global_font_size %}
             font-size: var(--font-h2--size);
           {% else %}
-            font-size: {{ block.settings.heading_size_mobile | default: 36 | divided_by: 16.0 }}rem;
+            font-size: {{ block.settings.heading_size_mobile | default: 36 }}px;
           {% endif %}
         }
         #block-{{ block.id }} .custom-split__subheading {
           {% if block.settings.use_global_font_size %}
             font-size: var(--font-paragraph--size);
           {% else %}
-            font-size: {{ block.settings.subheading_size_mobile | default: 16 | divided_by: 16.0 }}rem;
+            font-size: {{ block.settings.subheading_size_mobile | default: 16 }}px;
           {% endif %}
         }
         #block-{{ block.id }} .custom-split__btn {
@@ -262,7 +262,7 @@
           {% if block.settings.use_global_font_size %}
             font-size: var(--font-paragraph--size);
           {% else %}
-            font-size: {{ block.settings.btn_font_size_mobile | default: 14 | divided_by: 16.0 }}rem;
+            font-size: {{ block.settings.btn_font_size_mobile | default: 14 }}px;
           {% endif %}
         }
       }
@@ -830,8 +830,8 @@
   ],
   "presets": [
     {
-      "name": "Custom Split Container",
-      "category": "Test Sections",
+      "name": "Split Image/Text Banner",
+      "category": "EcomExperts Test Sections",
       "blocks": [
         {
           "type": "text_box"
