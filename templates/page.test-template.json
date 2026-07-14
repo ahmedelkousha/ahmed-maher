@@ -197,6 +197,9 @@
         "text_box_pWbUTC",
         "image_ik4Eke"
       ],
+      "custom_css": [
+        "section .custom-split__container{margin-top: -12px;}"
+      ],
       "name": "Custom Split Container",
       "settings": {
         "section_padding_left_desktop": 0,
