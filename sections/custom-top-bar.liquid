@@ -1,22 +1,26 @@
 <section id="custom-top-bar-section-{{ section.id }}" class="custom-top-bar-section">
-  {% comment %} 
+  {% comment %}
     Top-bar container wrapper, background/text color, and font-size settings are dynamically configured in the editor.
   {% endcomment %}
   <div class="custom-top-bar">
-    {% comment %} 
-      Mobile Menu Toggle Button. Reveals the announcement messaging and CTA button 
+    {% comment %}
+      Mobile Menu Toggle Button. Reveals the announcement messaging and CTA button
       with sliding effect box on mobile devices.
     {% endcomment %}
     <div class="custom-top-bar__menu-toggle">
-      <button class="custom-top-bar__hamburger-btn" aria-label="Menu" aria-controls="custom-top-bar-dropdown-{{ section.id }}">
+      <button
+        class="custom-top-bar__hamburger-btn"
+        aria-label="Menu"
+        aria-controls="custom-top-bar-dropdown-{{ section.id }}"
+      >
         <span class="line-1"></span>
         <span class="line-2"></span>
         <span class="line-3"></span>
       </button>
     </div>
 
-    {% comment %} 
-      Desktop Blocks Renderer. Iterates through logo, announcement text, and CTA button blocks 
+    {% comment %}
+      Desktop Blocks Renderer. Iterates through logo, announcement text, and CTA button blocks
       and places them in a flexible horizontal container.
     {% endcomment %}
     {% for block in section.blocks %}
@@ -38,14 +42,22 @@
           </div>
 
         {% when 'text' %}
-          <div id="block-text-{{ block.id }}" class="custom-top-bar__text desktop-only" {{ block.shopify_attributes }}>
+          <p id="block-text-{{ block.id }}" class="custom-top-bar__text desktop-only" {{ block.shopify_attributes }}>
             {{ block.settings.top_bar_text }}
-          </div>
+          </p>
 
         {% when 'button' %}
-          <div id="block-btn-wrapper-{{ block.id }}" class="custom-top-bar__button-wrapper desktop-only" {{ block.shopify_attributes }}>
+          <div
+            id="block-btn-wrapper-{{ block.id }}"
+            class="custom-top-bar__button-wrapper desktop-only"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.button_text != blank %}
-              <a id="block-btn-{{ block.id }}" href="{{ block.settings.button_link | default: '#' }}" class="custom-top-bar__btn">
+              <a
+                id="block-btn-{{ block.id }}"
+                href="{{ block.settings.button_link | default: '#' }}"
+                class="custom-top-bar__btn"
+              >
                 {{ block.settings.button_text }}
                 {% if block.settings.button_icon != blank %}
                   <img
@@ -62,29 +74,41 @@
       {% endcase %}
     {% endfor %}
 
-    {% comment %} 
-      Symmetry Spacer. An empty flex item that aligns the logo exactly in the horizontal center 
+    {% comment %}
+      Symmetry Spacer. An empty flex item that aligns the logo exactly in the horizontal center
       of the mobile viewport, balancing the space taken by the hamburger button on the left.
     {% endcomment %}
     <div class="custom-top-bar__right-spacer"></div>
   </div>
 
-  {% comment %} 
-    Mobile sliding menu. Operates as an expandable content drawer, dynamically toggled by the hamburger 
+  {% comment %}
+    Mobile sliding menu. Operates as an expandable content drawer, dynamically toggled by the hamburger
     button clicks, which slides to reveal hidden button and text blocks.
   {% endcomment %}
   <div id="custom-top-bar-dropdown-{{ section.id }}" class="custom-top-bar__mobile-dropdown">
     {% for block in section.blocks %}
       {% case block.type %}
         {% when 'text' %}
-          <div id="block-text-mobile-{{ block.id }}" class="custom-top-bar__text mobile-only" {{ block.shopify_attributes }}>
+          <div
+            id="block-text-mobile-{{ block.id }}"
+            class="custom-top-bar__text mobile-only"
+            {{ block.shopify_attributes }}
+          >
             {{ block.settings.top_bar_text }}
           </div>
 
         {% when 'button' %}
-          <div id="block-btn-wrapper-mobile-{{ block.id }}" class="custom-top-bar__button-wrapper mobile-only" {{ block.shopify_attributes }}>
+          <div
+            id="block-btn-wrapper-mobile-{{ block.id }}"
+            class="custom-top-bar__button-wrapper mobile-only"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.button_text != blank %}
-              <a id="block-btn-mobile-{{ block.id }}" href="{{ block.settings.button_link | default: '#' }}" class="custom-top-bar__btn">
+              <a
+                id="block-btn-mobile-{{ block.id }}"
+                href="{{ block.settings.button_link | default: '#' }}"
+                class="custom-top-bar__btn"
+              >
                 {{ block.settings.button_text }}
                 {% if block.settings.button_icon != blank %}
                   <img
@@ -106,177 +130,182 @@
 {{ 'custom-top-bar.css' | asset_url | stylesheet_tag }}
 
 <style>
-  #custom-top-bar-section-{{ section.id }} {
-    position: relative;
-    --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
-    --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
-    --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
-    --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
-  }
+    #custom-top-bar-section-{{ section.id }} {
+      position: relative;
+      --topbar-bg: {{ section.settings.top_bar_bg | default: '#ffffff' }};
+      --topbar-color: {{ section.settings.top_bar_color | default: '#000000' }};
+      --btn-bg: {{ section.settings.button_bg | default: '#000000' }};
+      --btn-color: {{ section.settings.button_color | default: '#ffffff' }};
+    }
 
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'logo' -%}
-      #block-logo-{{ block.id }} {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-        justify-content: {{ block.settings.logo_align_desktop | default: 'flex-start' }};
-        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
-      }
-      #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-        font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
-        color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
-      }
-
-      @media screen and (max-width: 768px) {
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'logo' -%}
         #block-logo-{{ block.id }} {
-          justify-content: {{ block.settings.logo_align_mobile | default: 'center' }};
-          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          box-sizing: border-box;
+          justify-content: {{ block.settings.logo_align_desktop | default: 'flex-start' }};
+          padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
         }
         #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-          font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
+          color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
         }
-      }
 
-    {%- elsif block.type == 'text' -%}
-      #block-text-{{ block.id }} {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-        color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
-        background-color: {{ block.settings.text_bg | default: 'transparent' }};
-        justify-content: {{ block.settings.text_align_desktop | default: 'center' }};
-        text-align: {{ block.settings.text_align_desktop | default: 'center' }};
-        font-size: {{ block.settings.text_size_desktop | default: 16 | divided_by: 16.0 }}rem;
-        padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
-      }
+        @media screen and (max-width: 768px) {
+          #block-logo-{{ block.id }} {
+            justify-content: {{ block.settings.logo_align_mobile | default: 'center' }};
+            padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+          }
+          #block-logo-{{ block.id }} .custom-top-bar__logo-text {
+            font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
+          }
+        }
 
-      @media screen and (max-width: 768px) {
-        #block-text-mobile-{{ block.id }} {
+      {%- elsif block.type == 'text' -%}
+        #block-text-{{ block.id }} {
           display: flex;
-          justify-content: {{ block.settings.text_align_mobile | default: 'center' }};
-          text-align: {{ block.settings.text_align_mobile | default: 'center' }};
-          font-size: {{ block.settings.text_size_mobile | default: 12 | divided_by: 16.0 }}rem;
-          padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+          align-items: center;
+          width: 100%;
+          font-family: var(--font-paragraph--family);
+          font-weight: var(--font-paragraph--weight);
+          box-sizing: border-box;
+          line-height: var(--font-paragraph--line-height);
+          letter-spacing: var(--font-paragraph--letter-spacing);
+          text-transform: var(--font-paragraph--case);
           color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
           background-color: {{ block.settings.text_bg | default: 'transparent' }};
-          width: 100%;
-          box-sizing: border-box;
-          margin-bottom: 20px;
+          justify-content: {{ block.settings.text_align_desktop | default: 'center' }};
+          text-align: {{ block.settings.text_align_desktop | default: 'center' }};
+          font-size: calc(var(--font-paragraph--size) * ({{ block.settings.text_size_desktop | default: 16 }} / 16.0));
+          padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
         }
-      }
 
-    {%- elsif block.type == 'button' -%}
-      #block-btn-wrapper-{{ block.id }} {
-        display: flex;
-        width: 100%;
-        box-sizing: border-box;
-        justify-content: {{ block.settings.btn_align_desktop | default: 'flex-end' }};
-      }
+        @media screen and (max-width: 768px) {
+          #block-text-mobile-{{ block.id }} {
+            display: flex;
+            justify-content: {{ block.settings.text_align_mobile | default: 'center' }};
+            text-align: {{ block.settings.text_align_mobile | default: 'center' }};
+            font-size: calc(var(--font-paragraph--size) * ({{ block.settings.text_size_mobile | default: 12 }} / 12.0));
+            padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
+            color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
+            background-color: {{ block.settings.text_bg | default: 'transparent' }};
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+          }
+        }
 
-      #block-btn-{{ block.id }},
-      #block-btn-mobile-{{ block.id }} {
-        --btn-font-size: {{ block.settings.btn_size_desktop | default: 16 | divided_by: 16.0 }}rem;
-        --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
-        --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
-        --btn-bg-color: {{ block.settings.button_bg_color | default: '#FFF544' }};
-        --btn-text-color: {{ block.settings.button_text_color | default: '#000000' }};
-        --btn-hover-bg: {{ block.settings.button_hover_bg | default: '#000000' }};
-        --btn-hover-color: {{ block.settings.button_hover_text | default: '#ffffff' }};
-
-        font-size: var(--btn-font-size);
-        color: var(--btn-text-color);
-        background-color: var(--btn-bg-color);
-      }
-
-      #block-btn-{{ block.id }}::before,
-      #block-btn-mobile-{{ block.id }}::before {
-        background-color: var(--btn-hover-bg);
-      }
-
-      #block-btn-{{ block.id }}:hover,
-      #block-btn-mobile-{{ block.id }}:hover {
-        color: var(--btn-hover-color);
-      }
-
-      #block-btn-{{ block.id }} {
-        justify-content: center;
-        {%- if block.settings.button_icon != blank -%}
-          gap: 18px;
-          padding: var(--btn-padding-y) var(--btn-padding-x) var(--btn-padding-y) calc(var(--btn-padding-x) + 17px);
-        {%- else -%}
-          padding: var(--btn-padding-y) var(--btn-padding-x);
-        {%- endif -%}
-      }
-
-      #block-btn-mobile-{{ block.id }} {
-        justify-content: center;
-      }
-
-      #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
-      #block-btn-mobile-{{ block.id }} .custom-top-bar__btn-icon {
-        {%- assign bar_default_color = block.settings.button_text_color | default: '#000000' -%}
-        {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
-        {%- if bar_default_brightness > 128 -%}
-          filter: invert(1);
-        {%- else -%}
-          filter: none;
-        {%- endif -%}
-      }
-
-      #block-btn-{{ block.id }}:hover .custom-top-bar__btn-icon,
-      #block-btn-mobile-{{ block.id }}:hover .custom-top-bar__btn-icon {
-        {%- assign bar_hover_color = block.settings.button_hover_text | default: '#ffffff' -%}
-        {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
-        {%- if bar_hover_brightness > 128 -%}
-          filter: invert(1);
-        {%- else -%}
-          filter: none;
-        {%- endif -%}
-      }
-
-      @media screen and (max-width: 768px) {
-        #block-btn-wrapper-mobile-{{ block.id }} {
+      {%- elsif block.type == 'button' -%}
+        #block-btn-wrapper-{{ block.id }} {
           display: flex;
           width: 100%;
           box-sizing: border-box;
-          justify-content: {{ block.settings.btn_align_mobile | default: 'center' }};
+          justify-content: {{ block.settings.btn_align_desktop | default: 'flex-end' }};
         }
+
+        #block-btn-{{ block.id }},
         #block-btn-mobile-{{ block.id }} {
-          --btn-font-size: {{ block.settings.btn_size_mobile | default: 12 | divided_by: 16.0 }}rem;
-          --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
-          --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
-          
+          --btn-font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_size_desktop | default: 16 }} / 16.0));
+          --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
+          --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
+          --btn-bg-color: {{ block.settings.button_bg_color | default: '#FFF544' }};
+          --btn-text-color: {{ block.settings.button_text_color | default: '#000000' }};
+          --btn-hover-bg: {{ block.settings.button_hover_bg | default: '#000000' }};
+          --btn-hover-color: {{ block.settings.button_hover_text | default: '#ffffff' }};
+
           font-size: var(--btn-font-size);
+          color: var(--btn-text-color);
+          background-color: var(--btn-bg-color);
+        }
+
+        #block-btn-{{ block.id }}::before,
+        #block-btn-mobile-{{ block.id }}::before {
+          background-color: var(--btn-hover-bg);
+        }
+
+        #block-btn-{{ block.id }}:hover,
+        #block-btn-mobile-{{ block.id }}:hover {
+          color: var(--btn-hover-color);
+        }
+
+        #block-btn-{{ block.id }} {
+          justify-content: center;
           {%- if block.settings.button_icon != blank -%}
             gap: 18px;
-            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob) var(--btn-padding-y-mob) calc(var(--btn-padding-x-mob) + 17px);
+            padding: var(--btn-padding-y) var(--btn-padding-x) var(--btn-padding-y) calc(var(--btn-padding-x) + 17px);
           {%- else -%}
-            padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob);
+            padding: var(--btn-padding-y) var(--btn-padding-x);
           {%- endif -%}
         }
-      }
-    {%- endif -%}
-  {%- endfor -%}
 
-  {%- for block in section.blocks -%}
-    {%- if block.settings.hide_on_desktop -%}
-      #block-logo-{{ block.id }},
-      #block-text-{{ block.id }},
-      #block-btn-wrapper-{{ block.id }} {
-        display: none !important;
-      }
-    {%- endif -%}
-    {%- if block.settings.hide_on_mobile -%}
-      #block-logo-{{ block.id }},
-      #block-text-mobile-{{ block.id }},
-      #block-btn-wrapper-mobile-{{ block.id }} {
-        display: none !important;
-      }
-    {%- endif -%}
-  {%- endfor -%}
+        #block-btn-mobile-{{ block.id }} {
+          justify-content: center;
+        }
+
+        #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
+        #block-btn-mobile-{{ block.id }} .custom-top-bar__btn-icon {
+          {%- assign bar_default_color = block.settings.button_text_color | default: '#000000' -%}
+          {%- assign bar_default_brightness = bar_default_color | color_brightness -%}
+          {%- if bar_default_brightness > 128 -%}
+            filter: invert(1);
+          {%- else -%}
+            filter: none;
+          {%- endif -%}
+        }
+
+        #block-btn-{{ block.id }}:hover .custom-top-bar__btn-icon,
+        #block-btn-mobile-{{ block.id }}:hover .custom-top-bar__btn-icon {
+          {%- assign bar_hover_color = block.settings.button_hover_text | default: '#ffffff' -%}
+          {%- assign bar_hover_brightness = bar_hover_color | color_brightness -%}
+          {%- if bar_hover_brightness > 128 -%}
+            filter: invert(1);
+          {%- else -%}
+            filter: none;
+          {%- endif -%}
+        }
+
+        @media screen and (max-width: 768px) {
+          #block-btn-wrapper-mobile-{{ block.id }} {
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            justify-content: {{ block.settings.btn_align_mobile | default: 'center' }};
+          }
+          #block-btn-mobile-{{ block.id }} {
+            --btn-font-size: calc(var(--font-paragraph--size) * ({{ block.settings.btn_size_mobile | default: 12 }} / 12.0));
+            --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
+            --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
+
+            font-size: var(--btn-font-size);
+            {%- if block.settings.button_icon != blank -%}
+              gap: 18px;
+              padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob) var(--btn-padding-y-mob) calc(var(--btn-padding-x-mob) + 17px);
+            {%- else -%}
+              padding: var(--btn-padding-y-mob) var(--btn-padding-x-mob);
+            {%- endif -%}
+          }
+        }
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.settings.hide_on_desktop -%}
+        #block-logo-{{ block.id }},
+        #block-text-{{ block.id }},
+        #block-btn-wrapper-{{ block.id }} {
+          display: none !important;
+        }
+      {%- endif -%}
+      {%- if block.settings.hide_on_mobile -%}
+        #block-logo-{{ block.id }},
+        #block-text-mobile-{{ block.id }},
+        #block-btn-wrapper-mobile-{{ block.id }} {
+          display: none !important;
+        }
+      {%- endif -%}
+    {%- endfor -%}
 </style>
 
 <script src="{{ 'custom-top-bar.js' | asset_url }}" defer="defer"></script>
@@ -367,7 +396,7 @@
           ],
           "default": "center"
         },
-        
+
         {
           "type": "header",
           "content": "Fallback Text Color"
@@ -402,7 +431,7 @@
           "label": "X-Padding",
           "default": 0
         },
-            {
+        {
           "type": "header",
           "content": "Padding Mobile"
         },

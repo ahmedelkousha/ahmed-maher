@@ -7,9 +7,13 @@
 
   /* Heading Styling: typography rules and margins for the product section heading */
   .custom-products-grid__title {
-    font-weight: 400;
+    font-family: var(--font-h2--family);
+    font-weight: var(--font-h2--weight);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+    font-style: var(--font-h2--style);
     margin-bottom: 32px;
-    letter-spacing: -0.5px;
   }
 
   .custom-products-grid__container {
@@ -191,8 +195,12 @@
   .custom-quick-view__title {
     margin: 0;
     font-size: 14px;
-    font-weight: 300;
-    line-height: 1.2;
+    font-family: var(--font-h3--family);
+    font-weight: var(--font-h3--weight);
+    line-height: var(--font-h3--line-height);
+    letter-spacing: var(--font-h3--letter-spacing);
+    text-transform: var(--font-h3--case);
+    font-style: var(--font-h3--style);
     color: #000000;
   }
 
@@ -204,7 +212,8 @@
 
   .custom-quick-view__price {
     font-size: 12px;
-    font-weight: 400;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
     color: #000000;
   }
 
@@ -216,7 +225,11 @@
 
   .custom-quick-view__description {
     font-size: 12px;
-    line-height: 1.5;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+    line-height: var(--font-paragraph--line-height);
+    letter-spacing: var(--font-paragraph--letter-spacing);
+    text-transform: var(--font-paragraph--case);
     color: #666666;
   }
 
@@ -241,9 +254,10 @@
 
   .custom-option-label {
     font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+    letter-spacing: var(--font-paragraph--letter-spacing);
+    text-transform: var(--font-paragraph--case);
     color: #888;
   }
 
@@ -375,10 +389,11 @@
     background: #000000;
     color: #ffffff;
     border: none;
-    font-weight: 500;
+    font-family: var(--button-font-family-primary);
+    font-weight: var(--font-paragraph--weight);
     font-size: 13px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    letter-spacing: var(--font-paragraph--letter-spacing);
+    text-transform: var(--button-text-case-primary);
     cursor: pointer;
     border-radius: 0;
     display: flex;
