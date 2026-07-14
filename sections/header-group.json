@@ -124,7 +124,7 @@
             "text_align_mobile": "center",
             "use_global_font_size": false,
             "text_size_desktop": 16,
-            "text_size_mobile": 12,
+            "text_size_mobile": 16,
             "text_color": "#000000",
             "text_bg": "rgba(0,0,0,0)",
             "padding_y_desktop": 0,
@@ -145,7 +145,7 @@
             "btn_align_mobile": "center",
             "use_global_font_size": false,
             "btn_size_desktop": 16,
-            "btn_size_mobile": 12,
+            "btn_size_mobile": 16,
             "button_bg_color": "#fff544",
             "button_text_color": "#000000",
             "button_hover_bg": "#000000",
@@ -166,7 +166,7 @@
       ],
       "custom_css": [
         "section .custom-top-bar__text {font-weight: 460; letter-spacing: 0px; line-height: 13.42px; margin-right: 4%;}",
-        "section .custom-top-bar__btn{font-weight: 460;}"
+        "section .custom-top-bar__btn {font-weight: 460;}"
       ],
       "name": "Custom Top Bar",
       "settings": {

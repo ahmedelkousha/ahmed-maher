@@ -153,7 +153,7 @@
             "use_global_font_size": false,
             "heading_size_desktop": 70,
             "subheading_size_desktop": 20,
-            "heading_size_mobile": 34,
+            "heading_size_mobile": 30,
             "subheading_size_mobile": 16,
             "alignment_desktop": "flex-start",
             "width_desktop": 38,
@@ -163,11 +163,11 @@
             "padding_bottom_desktop": 40,
             "padding_left_desktop": 60,
             "alignment_mobile": "center",
-            "gap_mobile": 16,
-            "padding_top_mobile": 30,
-            "padding_right_mobile": 20,
+            "gap_mobile": 24,
+            "padding_top_mobile": 49,
+            "padding_right_mobile": 18,
             "padding_bottom_mobile": 30,
-            "padding_left_mobile": 20,
+            "padding_left_mobile": 18,
             "button_text": "SHOP NOW",
             "button_link": "",
             "button_icon": "shopify://shop_images/arrow.png",
@@ -189,6 +189,7 @@
           "type": "image",
           "settings": {
             "image_desktop": "shopify://shop_images/Frame_1.png",
+            "image_mobile": "shopify://shop_images/hero-mobile.png",
             "width_desktop": 100,
             "hide_on_desktop": false,
             "hide_on_mobile": false
@@ -218,7 +219,7 @@
     "custom_text_container_DUJ6h8": {
       "type": "custom-text-container",
       "custom_css": [
-        "section .custom-text-section__text {font-weight: 460; line-height: 13.42px; letter-spacing: -0.25px;}"
+        "section .custom-text-section__text {font-weight: 400; line-height: 13.42px; letter-spacing: -0.25px;}"
       ],
       "name": "Custom Text Container",
       "settings": {
@@ -237,7 +238,7 @@
         "text_size_desktop": 16,
         "text_color_desktop": "{{ settings.color_palette.foreground }}",
         "text_alignment_mobile": "center",
-        "text_size_mobile": 16,
+        "text_size_mobile": 14,
         "text_color_mobile": "{{ settings.color_palette.foreground }}",
         "button_text": "",
         "button_link": "",
@@ -255,19 +256,20 @@
         "background_color_desktop": "#f5f5f5",
         "background_color_mobile": "#f5f5f5",
         "padding_top_desktop": 10,
-        "padding_right_desktop": 0,
+        "padding_right_desktop": 50,
         "padding_bottom_desktop": 10,
-        "padding_left_desktop": 0,
+        "padding_left_desktop": 50,
         "padding_top_mobile": 10,
-        "padding_right_mobile": 6,
+        "padding_right_mobile": 18,
         "padding_bottom_mobile": 10,
-        "padding_left_mobile": 6
+        "padding_left_mobile": 18
       }
     },
     "custom_products_grid_AYk9xj": {
       "type": "custom-products-grid",
       "custom_css": [
-        "section .custom-products-grid__title {line-height: 120%; letter-spacing: 0px; font-family: \"Lustria\", serif;}"
+        "section .custom-products-grid__title {line-height: 120%; letter-spacing: 0px; font-weight: 460; font-family: \"Lustria\", serif;}",
+        "@media screen and (max-width: 768px) {section .custom-products-grid__title {margin-bottom: 20px; font-weight: 400; }}"
       ],
       "name": "Custom Products Grid",
       "settings": {
@@ -277,7 +279,7 @@
         "heading_size_desktop": 36,
         "heading_color_desktop": "#000000",
         "heading_alignment_mobile": "center",
-        "heading_size_mobile": 28,
+        "heading_size_mobile": 24,
         "heading_color_mobile": "#000000",
         "product_list": [
           "black-leather-bag",
@@ -293,15 +295,15 @@
         "gap_desktop": 20,
         "columns_mobile": 2,
         "rows_mobile": 3,
-        "gap_mobile": 12,
+        "gap_mobile": 4,
         "padding_top_desktop": 90,
         "padding_right_desktop": 50,
         "padding_bottom_desktop": 51,
         "padding_left_desktop": 50,
-        "padding_top_mobile": 12,
-        "padding_right_mobile": 50,
-        "padding_bottom_mobile": 12,
-        "padding_left_mobile": 50
+        "padding_top_mobile": 40,
+        "padding_right_mobile": 18,
+        "padding_bottom_mobile": 20,
+        "padding_left_mobile": 18
       }
     }
   },
