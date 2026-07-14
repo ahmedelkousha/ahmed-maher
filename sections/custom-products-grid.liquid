@@ -335,7 +335,11 @@
   /* Position and style the main grid heading */
   #custom-products-grid-{{ section.id }} .custom-products-grid__title {
     text-align: {{ section.settings.heading_alignment_desktop | default: 'center' }};
-    font-size: calc(var(--font-h2--size) * ({{ section.settings.heading_size_desktop | default: 32 }} / 32.0));
+    {% if section.settings.use_global_font_size %}
+      font-size: var(--font-h2--size);
+    {% else %}
+      font-size: {{ section.settings.heading_size_desktop | default: 32 }}px;
+    {% endif %}
     color: {{ section.settings.heading_color_desktop | default: '#000000' }};
   }
 
@@ -343,7 +347,11 @@
   @media screen and (max-width: 768px) {
     #custom-products-grid-{{ section.id }} .custom-products-grid__title {
       text-align: {{ section.settings.heading_alignment_mobile | default: 'center' }};
-      font-size: calc(var(--font-h2--size) * ({{ section.settings.heading_size_mobile | default: 24 }} / 24.0));
+      {% if section.settings.use_global_font_size %}
+        font-size: var(--font-h2--size);
+      {% else %}
+        font-size: {{ section.settings.heading_size_mobile | default: 24 }}px;
+      {% endif %}
       color: {{ section.settings.heading_color_mobile | default: section.settings.heading_color_desktop | default: '#000000' }};
     }
   }
@@ -371,6 +379,12 @@
       "id": "title",
       "label": "Section Title",
       "default": "Featured Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_global_font_size",
+      "label": "Use global typography settings",
+      "default": false
     },
     {
       "type": "header",
