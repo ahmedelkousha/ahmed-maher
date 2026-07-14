@@ -1,6 +1,6 @@
   .custom-products-grid {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1337px;
     margin: 0 auto;
     box-sizing: border-box;
   }
@@ -38,11 +38,14 @@
     flex-direction: column;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 433px;
+    aspect-ratio: 433 / 444;
   }
 
   .custom-product-card__media {
     position: relative;
-    padding-bottom: 100%;
+    flex-grow: 1;
     width: 100%;
     background-color: #f7f7f7;
     overflow: hidden;
