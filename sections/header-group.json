@@ -146,6 +146,8 @@
             "use_global_font_size": false,
             "btn_size_desktop": 16,
             "btn_size_mobile": 16,
+            "btn_icon_gap_desktop": 18,
+            "btn_icon_gap_mobile": 40,
             "button_bg_color": "#fff544",
             "button_text_color": "#000000",
             "button_hover_bg": "#000000",
