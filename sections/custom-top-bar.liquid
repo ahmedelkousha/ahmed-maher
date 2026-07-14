@@ -206,7 +206,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: {{ block.settings.btn_icon_gap | default: 18 }}px;
         {% if block.settings.use_global_font_size %}
           --btn-font-size: var(--font-paragraph--size);
         {% else %}
@@ -237,7 +236,12 @@
       }
 
       #block-btn-{{ block.id }} {
+        gap: {{ block.settings.btn_icon_gap_desktop | default: 18 }}px;
         padding: var(--btn-padding-top) var(--btn-padding-right) var(--btn-padding-bottom) var(--btn-padding-left);
+      }
+
+      #block-btn-mobile-{{ block.id }} {
+        gap: {{ block.settings.btn_icon_gap_mobile | default: 18 }}px;
       }
 
       #block-btn-{{ block.id }} .custom-top-bar__btn-icon,
@@ -698,8 +702,18 @@
         },
         {
           "type": "range",
-          "id": "btn_icon_gap",
-          "label": "Button Icon Gap",
+          "id": "btn_icon_gap_desktop",
+          "label": "Button Icon Gap (Desktop)",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "btn_icon_gap_mobile",
+          "label": "Button Icon Gap (Mobile)",
           "min": 0,
           "max": 40,
           "step": 2,
