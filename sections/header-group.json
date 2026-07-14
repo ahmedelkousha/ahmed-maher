@@ -152,7 +152,7 @@
             "button_hover_text": "#ffffff",
             "padding_y_desktop": 9,
             "padding_x_desktop": 21,
-            "padding_y_mobile": 9,
+            "padding_y_mobile": 11,
             "padding_x_mobile": 34,
             "hide_on_desktop": false,
             "hide_on_mobile": false

@@ -179,8 +179,8 @@
             "btn_font_size_mobile": 14,
             "btn_padding_y_desktop": 12,
             "btn_padding_x_desktop": 36,
-            "btn_padding_y_mobile": 9,
-            "btn_padding_x_mobile": 21,
+            "btn_padding_y_mobile": 11,
+            "btn_padding_x_mobile": 25,
             "hide_on_desktop": false,
             "hide_on_mobile": false
           }
