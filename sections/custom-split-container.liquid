@@ -35,19 +35,14 @@
             </div>
 
             {% if block.settings.button_text != blank %}
-              <a href="{{ block.settings.button_link | default: '#' }}" class="custom-split__btn">
-                {{ block.settings.button_text }}
-                {% if block.settings.button_icon != blank %}
-                  <img
-                    src="{{ block.settings.button_icon | image_url: width: 24 }}"
-                    alt=""
-                    class="custom-split__btn-icon"
-                    loading="lazy"
-                    width="{{ block.settings.button_icon.width }}"
-                    height="{{ block.settings.button_icon.height }}"
-                  >
-                {% endif %}
-              </a>
+              {% render 'custom-button',
+                class: 'custom-split__btn',
+                text_class: 'custom-split__btn-text',
+                icon_class: 'custom-split__btn-icon',
+                link: block.settings.button_link,
+                text: block.settings.button_text,
+                icon: block.settings.button_icon
+              %}
             {% endif %}
           </div>
 
@@ -177,14 +172,13 @@
 
       /* Shape and position the main call-to-action button, leaving extra space if it includes a leading graphic or icon */
       #block-{{ block.id }} .custom-split__btn {
-        {% if block.settings.button_icon != blank %}
-          gap: 18px;
-          padding: {{ block.settings.btn_padding_y_desktop | default: 9 }}px {{ block.settings.btn_padding_x_desktop | default: 21 }}px {{ block.settings.btn_padding_y_desktop | default: 9 }}px calc({{ block.settings.btn_padding_x_desktop | default: 21 }}px + 17px);
-        {% else %}
-          padding: {{ block.settings.btn_padding_y_desktop | default: 9 }}px {{ block.settings.btn_padding_x_desktop | default: 21 }}px;
-        {% endif %}
+        padding: {{ block.settings.btn_padding_top_desktop | default: 9 }}px {{ block.settings.btn_padding_right_desktop | default: 21 }}px {{ block.settings.btn_padding_bottom_desktop | default: 9 }}px {{ block.settings.btn_padding_left_desktop | default: 21 }}px;
       }
       #block-{{ block.id }} .custom-split__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: {{ block.settings.btn_icon_gap | default: 18 }}px;
         {% if block.settings.use_global_font_size %}
           font-size: var(--font-paragraph--size);
         {% else %}
@@ -251,14 +245,13 @@
           {% endif %}
         }
         #block-{{ block.id }} .custom-split__btn {
-          {% if block.settings.button_icon != blank %}
-            gap: 18px;
-            padding: {{ block.settings.btn_padding_y_mobile | default: 9 }}px {{ block.settings.btn_padding_x_mobile | default: 21 }}px {{ block.settings.btn_padding_y_mobile | default: 9 }}px calc({{ block.settings.btn_padding_x_mobile | default: 21 }}px + 17px);
-          {% else %}
-            padding: {{ block.settings.btn_padding_y_mobile | default: 9 }}px {{ block.settings.btn_padding_x_mobile | default: 21 }}px;
-          {% endif %}
+          padding: {{ block.settings.btn_padding_top_mobile | default: 9 }}px {{ block.settings.btn_padding_right_mobile | default: 21 }}px {{ block.settings.btn_padding_bottom_mobile | default: 9 }}px {{ block.settings.btn_padding_left_mobile | default: 21 }}px;
         }
         #block-{{ block.id }} .custom-split__btn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: {{ block.settings.btn_icon_gap | default: 18 }}px;
           {% if block.settings.use_global_font_size %}
             font-size: var(--font-paragraph--size);
           {% else %}
@@ -718,27 +711,57 @@
           "default": 14
         },
         {
+          "type": "range",
+          "id": "btn_icon_gap",
+          "label": "Button Icon Gap",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "default": 18
+        },
+        {
           "type": "header",
           "content": "Padding Desktop"
         },
         {
           "type": "range",
-          "id": "btn_padding_y_desktop",
+          "id": "btn_padding_top_desktop",
           "min": 0,
-          "max": 30,
+          "max": 40,
           "step": 1,
           "unit": "px",
-          "label": "Y-Padding",
+          "label": "Padding Top",
           "default": 9
         },
         {
           "type": "range",
-          "id": "btn_padding_x_desktop",
+          "id": "btn_padding_right_desktop",
           "min": 0,
-          "max": 50,
+          "max": 60,
           "step": 1,
           "unit": "px",
-          "label": "X-Padding",
+          "label": "Padding Right",
+          "default": 21
+        },
+        {
+          "type": "range",
+          "id": "btn_padding_bottom_desktop",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding Bottom",
+          "default": 9
+        },
+        {
+          "type": "range",
+          "id": "btn_padding_left_desktop",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding Left",
           "default": 21
         },
         {
@@ -747,22 +770,42 @@
         },
         {
           "type": "range",
-          "id": "btn_padding_y_mobile",
+          "id": "btn_padding_top_mobile",
           "min": 0,
-          "max": 30,
+          "max": 40,
           "step": 1,
           "unit": "px",
-          "label": "Y-Padding",
+          "label": "Padding Top",
           "default": 9
         },
         {
           "type": "range",
-          "id": "btn_padding_x_mobile",
+          "id": "btn_padding_right_mobile",
           "min": 0,
-          "max": 50,
+          "max": 60,
           "step": 1,
           "unit": "px",
-          "label": "X-Padding",
+          "label": "Padding Right",
+          "default": 21
+        },
+        {
+          "type": "range",
+          "id": "btn_padding_bottom_mobile",
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding Bottom",
+          "default": 9
+        },
+        {
+          "type": "range",
+          "id": "btn_padding_left_mobile",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding Left",
           "default": 21
         },
         {
