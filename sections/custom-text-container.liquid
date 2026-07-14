@@ -78,8 +78,8 @@
       --btn-size-desktop: var(--font-paragraph--size);
       --btn-size-mobile: var(--font-paragraph--size);
     {% else %}
-      --btn-size-desktop: calc(var(--font-paragraph--size) * ({{ section.settings.btn_font_size_desktop | default: 16 }} / 16.0));
-      --btn-size-mobile: calc(var(--font-paragraph--size) * ({{ section.settings.btn_font_size_mobile | default: 14 }} / 14.0));
+      --btn-size-desktop: {{ section.settings.btn_font_size_desktop | default: 16 }}px;
+      --btn-size-mobile: {{ section.settings.btn_font_size_mobile | default: 14 }}px;
     {% endif %}
     
     --btn-pad-y-desktop: {{ section.settings.btn_padding_y_desktop | default: 12 }}px;
@@ -91,14 +91,14 @@
     {% if section.settings.use_global_font_size %}
       --heading-size-desktop: var(--font-h2--size);
     {% else %}
-      --heading-size-desktop: calc(var(--font-h2--size) * ({{ section.settings.heading_size_desktop | default: 40 }} / 40.0));
+      --heading-size-desktop: {{ section.settings.heading_size_desktop | default: 40 }}px;
     {% endif %}
     --heading-color-desktop: {{ section.settings.heading_color_desktop | default: '#000000' }};
     --heading-align-mobile: {{ section.settings.heading_alignment_mobile | default: 'center' }};
     {% if section.settings.use_global_font_size %}
       --heading-size-mobile: var(--font-h2--size);
     {% else %}
-      --heading-size-mobile: calc(var(--font-h2--size) * ({{ section.settings.heading_size_mobile | default: 28 }} / 28.0));
+      --heading-size-mobile: {{ section.settings.heading_size_mobile | default: 28 }}px;
     {% endif %}
     --heading-color-mobile: {{ section.settings.heading_color_mobile | default: section.settings.heading_color_desktop | default: '#000000' }};
     
@@ -106,14 +106,14 @@
     {% if section.settings.use_global_font_size %}
       --text-size-desktop: var(--font-paragraph--size);
     {% else %}
-      --text-size-desktop: calc(var(--font-paragraph--size) * ({{ section.settings.text_size_desktop | default: 18 }} / 18.0));
+      --text-size-desktop: {{ section.settings.text_size_desktop | default: 18 }}px;
     {% endif %}
     --text-color-desktop: {{ section.settings.text_color_desktop | default: '#333333' }};
     --text-align-mobile: {{ section.settings.text_alignment_mobile | default: 'center' }};
     {% if section.settings.use_global_font_size %}
       --text-size-mobile: var(--font-paragraph--size);
     {% else %}
-      --text-size-mobile: calc(var(--font-paragraph--size) * ({{ section.settings.text_size_mobile | default: 16 }} / 16.0));
+      --text-size-mobile: {{ section.settings.text_size_mobile | default: 16 }}px;
     {% endif %}
     --text-color-mobile: {{ section.settings.text_color_mobile | default: section.settings.text_color_desktop | default: '#333333' }};
 
@@ -573,8 +573,8 @@
   ],
   "presets": [
     {
-      "name": "Custom Text Container",
-      "category": "Test Sections"
+      "name": "Text Banner Container",
+      "category": "EcomExperts Test Sections"
     }
   ]
 }

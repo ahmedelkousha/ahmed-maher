@@ -149,7 +149,7 @@
         padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
       }
       #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-        font-size: {{ block.settings.logo_text_size_desktop | default: 24 | divided_by: 16.0 }}rem;
+        font-size: {{ block.settings.logo_text_size_desktop | default: 24}}px;
         color: {{ block.settings.logo_color | default: 'var(--topbar-color)' }};
       }
 
@@ -159,7 +159,7 @@
           padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
         }
         #block-logo-{{ block.id }} .custom-top-bar__logo-text {
-          font-size: {{ block.settings.logo_text_size_mobile | default: 18 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.logo_text_size_mobile | default: 18}}px;
         }
       }
 
@@ -181,7 +181,7 @@
         {% if block.settings.use_global_font_size %}
           font-size: var(--font-paragraph--size);
         {% else %}
-          font-size: {{ block.settings.text_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+          font-size: {{ block.settings.text_size_desktop | default: 16 }}px;
         {% endif %}
         padding: {{ block.settings.padding_y_desktop | default: 0 }}px {{ block.settings.padding_x_desktop | default: 0 }}px;
       }
@@ -194,7 +194,7 @@
           {% if block.settings.use_global_font_size %}
             font-size: var(--font-paragraph--size);
           {% else %}
-            font-size: {{ block.settings.text_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+            font-size: {{ block.settings.text_size_mobile | default: 12 }}px;
           {% endif %}
           padding: {{ block.settings.padding_y_mobile | default: 0 }}px {{ block.settings.padding_x_mobile | default: 0 }}px;
           color: {{ block.settings.text_color | default: 'var(--topbar-color)' }};
@@ -218,7 +218,7 @@
         {% if block.settings.use_global_font_size %}
           --btn-font-size: var(--font-paragraph--size);
         {% else %}
-          --btn-font-size: {{ block.settings.btn_size_desktop | default: 16 | divided_by: 16.0 }}rem;
+          --btn-font-size: {{ block.settings.btn_size_desktop | default: 16 }}px;
         {% endif %}
         --btn-padding-y: {{ block.settings.padding_y_desktop | default: 9 }}px;
         --btn-padding-x: {{ block.settings.padding_x_desktop | default: 21 }}px;
@@ -289,7 +289,7 @@
           {% if block.settings.use_global_font_size %}
             --btn-font-size: var(--font-paragraph--size);
           {% else %}
-            --btn-font-size: {{ block.settings.btn_size_mobile | default: 12 | divided_by: 16.0 }}rem;
+            --btn-font-size: {{ block.settings.btn_size_mobile | default: 12 }}px;
           {% endif %}
           --btn-padding-y-mob: {{ block.settings.padding_y_mobile | default: 9 }}px;
           --btn-padding-x-mob: {{ block.settings.padding_x_mobile | default: 21 }}px;
@@ -812,8 +812,8 @@
   ],
   "presets": [
     {
-      "name": "Custom Top Bar",
-      "category": "Test Sections",
+      "name": "Top Bar",
+      "category": "EcomExperts Test Sections",
       "blocks": [
         {
           "type": "logo"
