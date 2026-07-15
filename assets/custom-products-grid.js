@@ -1,11 +1,30 @@
-(function() {
+// @ts-nocheck
+
+/*
+ * Product Quick View & Dynamic Cart Manager
+
+ * We wrap all our code inside a function wrapper (IIFE) to keep our variables private 
+   and avoid conflicting with any other scripts on the shop.
+
+ * Instead of adding event listeners to every single button (which slows down the browser),
+   we use a single global listener on the document level (Event Delegation) to catch clicks and changes.
+
+ */
+(function () {
+  // Keeps track of the cart toast auto-hide timer
   let toastTimeout = null;
 
-  // Initialize variant states when a modal is opened or options change
+  /*
+   * Checks the selected color and size options, finds the matching variant, 
+     and updates the modal's price, stock availability, and the add to cart button.
+   
+     */
   function updateVariant(modal) {
+    // Get the product variants array stored on the modal's data attribute
     const variants = JSON.parse(modal.dataset.variants || '[]');
     if (variants.length === 0) return;
 
+    // Get all the key elements inside this modal
     const form = modal.querySelector('.custom-quick-view-form');
     const submitBtn = modal.querySelector('.custom-quick-view-submit');
     const idInput = modal.querySelector('input[name="id"]');
@@ -15,38 +34,42 @@
     const numOptions = variants[0].options.length;
     const selectedOptions = new Array(numOptions);
 
-    // Fetch checked choices from each option group block and check for missing selections
+    // Look at each option group (like Color or Size) to see what is currently selected
     let missingSelectionName = null;
     modal.querySelectorAll('.custom-option-group').forEach((group) => {
       const optIdx = parseInt(group.getAttribute('data-option-index'), 10);
       const checkedRadio = group.querySelector('input[type="radio"]:checked');
+
       if (checkedRadio) {
         selectedOptions[optIdx] = checkedRadio.value;
       } else {
+        // If the user hasn't selected a value (e.g. haven't chosen a size yet)
         const label = group.querySelector('.custom-option-label');
-        missingSelectionName = label ? label.innerText.trim() : 'Option';
+        missingSelectionName = label ? label.innerText.replace(':', '').trim() : 'Option';
       }
     });
 
+    // If there is a missing selection (like Size), disable the button but keep text as Add to Cart
     if (missingSelectionName) {
       submitBtn.setAttribute('disabled', 'true');
       const btnText = modal.querySelector('.custom-submit-text');
       if (btnText) btnText.innerText = 'Add to Cart';
       const btnArrow = modal.querySelector('.custom-submit-arrow');
-      if (btnArrow) btnArrow.style.display = '';
+      if (btnArrow) btnArrow.style.display = ''; // Keep the arrow visible
       return;
     }
 
-    // Search the variants JSON to find a match that corresponds with our selected option combination
+    // Search the variants list to find the one matching the chosen options
     const variant = variants.find((v) => {
       return v.options.every((opt, idx) => opt === selectedOptions[idx]);
     });
 
     if (variant) {
-      // Sync input target id and disable form submission if variant has no stock
+      // Sync the hidden form input with the selected variant's ID
       idInput.value = variant.id;
       idInput.disabled = !variant.available;
 
+      // Update the main Add to Cart button based on stock
       if (variant.available) {
         submitBtn.removeAttribute('disabled');
         const btnText = modal.querySelector('.custom-submit-text');
@@ -54,6 +77,7 @@
         const btnArrow = modal.querySelector('.custom-submit-arrow');
         if (btnArrow) btnArrow.style.display = '';
       } else {
+        // Out of stock
         submitBtn.setAttribute('disabled', 'true');
         const btnText = modal.querySelector('.custom-submit-text');
         if (btnText) btnText.innerText = 'Sold Out';
@@ -61,12 +85,12 @@
         if (btnArrow) btnArrow.style.display = 'none';
       }
 
-      // Format price display text using theme helpers or basic dollar conversion
+      // Update the price display
       if (priceEl) {
         priceEl.innerHTML = formatMoney(variant.price);
       }
 
-      // Calculate compare price values and toggle markdown indicator visibility
+      // If there's a compare-at price (on-sale item), display the original price crossed out
       if (comparePriceEl) {
         if (variant.compare_at_price > variant.price) {
           comparePriceEl.innerHTML = formatMoney(variant.compare_at_price);
@@ -77,7 +101,7 @@
         }
       }
     } else {
-      // If no variant configuration is found, disable the submit action
+      // If the selected combination doesn't exist
       submitBtn.setAttribute('disabled', 'true');
       const btnText = modal.querySelector('.custom-submit-text');
       if (btnText) btnText.innerText = 'Unavailable';
@@ -86,16 +110,19 @@
     }
   }
 
-  // Add selected variants to the cart asynchronously using Shopify's AJAX API
+  /*
+   * Adds the selected variant to the cart using Shopify's AJAX API.
+
+   */
   async function addToCart(modal) {
-    const form = modal.querySelector('.custom-quick-view-form');
     const submitBtn = modal.querySelector('.custom-quick-view-submit');
+    if (submitBtn && submitBtn.hasAttribute('disabled')) return;
+
     const idInput = modal.querySelector('input[name="id"]');
     const variantId = idInput.value;
-
     if (!variantId) return;
 
-    // Toggle state to visual loading mode so users aren't left guessing if the click worked
+    // Show a loading spinner and set text to "Adding..."
     if (submitBtn) {
       submitBtn.setAttribute('disabled', 'true');
       const btnText = submitBtn.querySelector('.custom-submit-text');
@@ -116,7 +143,7 @@
       }
     }
 
-    // Detect if this selection has Black and Medium variant selected, that accordingly adds Soft Winter Jacket to cart as requested in instructions link
+    // Grab the chosen options to see if we should trigger the jacket promo
     const selectedOptions = Array.from(modal.querySelectorAll('input[type="radio"]:checked')).map((r) =>
       r.value.trim().toLowerCase()
     );
@@ -130,7 +157,7 @@
       },
     ];
 
-    // Push the Soft Winter Jacket to cart if the added-to-cart product is black color and medium size variants
+    // Promo rule: If Black and Medium are chosen, automatically bundle the Soft Winter Jacket (ID: 56764156051622)
     if (hasBlack && hasMedium) {
       items.push({
         id: 56764156051622,
@@ -140,7 +167,8 @@
 
     try {
       const rootPath = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-      // Send products data to shopify cart using AJAX API through the body of the POST request
+
+      // Post item(s) to the Shopify AJAX cart add endpoint
       const response = await fetch(rootPath + 'cart/add.js', {
         method: 'POST',
         headers: {
@@ -153,7 +181,7 @@
       });
 
       if (response.ok) {
-        // Alert user success, update global header counters, and dismiss the modal window
+        // Success: show success toast, update cart bubbles in header, and close the modal
         showSuccessToast();
         updateGlobalCartCount();
         closeModal(modal);
@@ -164,7 +192,7 @@
       console.error('Error adding to cart:', error);
       alert('Network error. Please try again.');
     } finally {
-      // Re-enable checkout button and restore default styles
+      // Re-enable the button and restore original state
       if (submitBtn) {
         submitBtn.removeAttribute('disabled');
         const btnText = submitBtn.querySelector('.custom-submit-text');
@@ -180,18 +208,22 @@
     }
   }
 
-  // Reset modal selections back to defaults
+  /*
+   * Resets all selections in the modal back to their initial unselected defaults.
+     This ensures opening a modal doesn't show old selections from the last product.
+
+     */
   function resetModal(modal) {
     const form = modal.querySelector('.custom-quick-view-form');
     if (form) {
-      form.reset();
+      form.reset(); // Resets all native inputs (radios, hidden fields) back to initial load states
     }
 
-    // Reset dropdown trigger texts and active selections
+    // Reset custom size dropdowns labels and selection outlines
     modal.querySelectorAll('.custom-option-group').forEach((group) => {
       const label = group.querySelector('.custom-option-label');
       const optionName = label ? label.innerText.replace(':', '').trim().toLowerCase() : 'size';
-      
+
       const dropdown = group.querySelector('.custom-dropdown-select');
       if (dropdown) {
         const triggerText = dropdown.querySelector('.custom-dropdown-select__trigger-text');
@@ -203,7 +235,7 @@
         });
       }
 
-      // Reset color indicators
+      // Reset the sliding background indicators for color options
       const colorContainer = group.querySelector('.custom-option-values--color');
       if (colorContainer) {
         initColorSlider(colorContainer);
@@ -211,23 +243,32 @@
     });
   }
 
-  // Display the modal and block background scroll
+  /*
+   * Opens the quick view modal and locks the main body scroll.
+
+     */
   function openModal(modal) {
-    resetModal(modal);
+    resetModal(modal); // Reset options first
     const modalInner = modal.querySelector('.custom-quick-view-modal');
     if (modalInner) modalInner.classList.add('is-active');
     document.body.style.overflow = 'hidden';
     updateVariant(modal);
   }
 
-  // Dismiss the modal overlay and restore default browser scroll settings
+  /*
+   * Closes the quick view modal and unlocks body scroll.
+
+      */
   function closeModal(modal) {
     const modalInner = modal.querySelector('.custom-quick-view-modal');
     if (modalInner) modalInner.classList.remove('is-active');
     document.body.style.overflow = '';
   }
 
-  // Show cart toast notification if the product is added to the cart successfully
+  /*
+   * Displays the added-to-cart success toast, hiding it automatically after 4 seconds.
+
+   */
   function showSuccessToast() {
     const toast = document.getElementById('custom-cart-toast');
     if (!toast) return;
@@ -240,13 +281,17 @@
     }, 4000);
   }
 
-  // Update cart count in the header
+  /*
+   * Fetches latest cart state and updates cart count bubbles in the header.
+
+   */
   async function updateGlobalCartCount() {
     try {
       const rootPath = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
       const response = await fetch(rootPath + 'cart.js');
       const cart = await response.json();
 
+      // Find standard theme cart counters and update them
       const countElements = document.querySelectorAll(
         '.cart-count, .cart-counter, [data-cart-count], .header-actions__cart-icon span, .cart-icon-bubble span'
       );
@@ -259,7 +304,10 @@
     }
   }
 
-  // Format price in cents to dollar format
+  /*
+   * Formats a raw price in cents into a dollar format (e.g. 1999 -> $19.99).
+
+   */
   function formatMoney(cents) {
     if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
       return Shopify.formatMoney(cents);
@@ -267,7 +315,10 @@
     return '$' + (cents / 100).toFixed(2);
   }
 
-  // Initialize color indicator slider transitions
+  /*
+   * Positions the colored indicator block on swatches.
+  
+   */
   function initColorSlider(container) {
     const radios = Array.from(container.querySelectorAll('input[type="radio"]'));
     const activeIdx = radios.findIndex((r) => r.checked);
@@ -278,9 +329,9 @@
 
   // --- Global Event Delegation Listeners ---
 
-  // Listen for click events globally
+  // Handle all click events on the page
   document.addEventListener('click', (e) => {
-    // 1. Open trigger
+    // 1. Plus trigger click (Open Quick View)
     const openTrigger = e.target.closest('.custom-product-card__quick-add-trigger');
     if (openTrigger) {
       e.preventDefault();
@@ -293,11 +344,11 @@
       return;
     }
 
-    // Find if the click is within a custom-quick-view modal context
+    // Verify if click is inside a quick-view modal
     const modal = e.target.closest('.custom-quick-view');
     if (!modal) return;
 
-    // 2. Close triggers
+    // 2. Close modal triggers (backdrop overlay or 'X' button)
     const closeTrigger = e.target.closest('.custom-quick-view-modal__close');
     const backdropTrigger = e.target.closest('.custom-quick-view-modal__backdrop');
     if (closeTrigger || backdropTrigger) {
@@ -306,7 +357,7 @@
       return;
     }
 
-    // 3. Dropdown Trigger toggles
+    // 3. Size dropdown toggle click
     const dropdownTrigger = e.target.closest('.custom-dropdown-select__trigger');
     if (dropdownTrigger) {
       e.stopPropagation();
@@ -318,7 +369,7 @@
       return;
     }
 
-    // 4. Dropdown Option selections
+    // 4. Dropdown option select click
     const optionEl = e.target.closest('.custom-dropdown-select__option');
     if (optionEl) {
       const dropdown = optionEl.closest('.custom-dropdown-select');
@@ -333,6 +384,7 @@
         el.classList.toggle('is-selected', el === optionEl);
       });
 
+      // Check the hidden native radio input and trigger a 'change' event to update price
       const radio = group.querySelector(`input[type="radio"][value="${val}"]`);
       if (radio) {
         radio.checked = true;
@@ -341,18 +393,18 @@
       return;
     }
 
-    // Close all dropdowns if clicking elsewhere inside the modal
+    // Close any open dropdowns if clicking elsewhere inside the modal bounds
     modal.querySelectorAll('.custom-dropdown-select').forEach((d) => d.classList.remove('is-open'));
   });
 
-  // Close all dropdowns globally if clicking outside of any dropdown trigger
+  // Close all open dropdown menus if clicking outside of the selector completely
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.custom-dropdown-select')) {
       document.querySelectorAll('.custom-dropdown-select').forEach((d) => d.classList.remove('is-open'));
     }
   });
 
-  // Listen for Escape key globally to close popup automatically
+  // Escape key listener to close active modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       const activeModal = document.querySelector('.custom-quick-view-modal.is-active');
@@ -363,13 +415,12 @@
     }
   });
 
-  // Listen for change events on forms
+  // Listen for swatches / dropdown selection change events
   document.addEventListener('change', (e) => {
     const form = e.target.closest('.custom-quick-view-form');
     if (form) {
       const modal = form.closest('.custom-quick-view');
       if (modal) {
-        // If color slider changed, update its indicator layout position
         const colorContainer = e.target.closest('.custom-option-values--color');
         if (colorContainer) {
           initColorSlider(colorContainer);
@@ -379,13 +430,14 @@
     }
   });
 
-  // Listen for submit events on forms
+  // Listen for Add to Cart form submissions
   document.addEventListener('submit', (e) => {
     const form = e.target.closest('.custom-quick-view-form');
     if (form) {
       e.preventDefault();
       const modal = form.closest('.custom-quick-view');
       if (modal) {
+        // Stop submission if the button is disabled (size not chosen)
         const submitBtn = modal.querySelector('.custom-quick-view-submit');
         if (submitBtn && submitBtn.hasAttribute('disabled')) {
           return;
@@ -395,12 +447,11 @@
     }
   });
 
-  // Setup color slider position on DOMContentLoaded (for default pre-selected swatches)
+  // Set default swatch indicators and price states on page load
   function initAllColorSliders() {
     document.querySelectorAll('.custom-option-values--color').forEach((container) => {
       initColorSlider(container);
     });
-    // Run variant updates initially for all products
     document.querySelectorAll('.custom-quick-view').forEach((modal) => {
       updateVariant(modal);
     });
