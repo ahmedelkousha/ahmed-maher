@@ -150,7 +150,7 @@
   "platform_customizations": {
     "custom_css": [
       ".btn-slide-hover {width: max-content;}",
-      ".custom-quick-view__price{font-family: \"Lustria\", serif;}"
+      ".btn-slide-hover custom-quick-view-submit{width: unset; }"
     ]
   }
 }
