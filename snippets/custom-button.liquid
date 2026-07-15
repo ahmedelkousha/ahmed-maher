@@ -1,8 +1,10 @@
 {% comment %}
-  Button snippet for global use for anchors and form buttons.
+  This is a reusable button snippet that can render either a form button (<button>) 
+  or a standard link anchor (<a>), depending on how you call it.
 {% endcomment %}
 
 {% if tag == 'button' or type != blank %}
+  {% comment %} If tag is set to 'button' or a button type is provided, we output a button element {% endcomment %}
   <button
     {% if type != blank %}
       type="{{ type }}"
@@ -16,6 +18,8 @@
     {% endif %}
   >
     <span class="{{ text_class | default: 'custom-btn-text' }}">{{ text }}</span>
+    
+    {% comment %} Render the icon (either an uploaded Shopify image or raw SVG/HTML) {% endcomment %}
     {% if icon != blank %}
       <img
         src="{{ icon | image_url: width: 40 }}"
@@ -30,6 +34,7 @@
     {% endif %}
   </button>
 {% else %}
+  {% comment %} Otherwise, default to outputting a standard navigation link {% endcomment %}
   <a
     href="{{ link | default: '#' }}"
     class="btn-slide-hover {{ class }}"
@@ -38,6 +43,8 @@
     {% endif %}
   >
     <span class="{{ text_class | default: 'custom-btn-text' }}">{{ text }}</span>
+    
+    {% comment %} Render the icon (either an uploaded Shopify image or raw SVG/HTML) {% endcomment %}
     {% if icon != blank %}
       <img
         src="{{ icon | image_url: width: 40 }}"
