@@ -120,10 +120,10 @@
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
       opacity 0.2s ease;
     z-index: 10001;
-    padding: 30px 16px 20px 16px;
+    padding: 36px 20px 25px 20px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     box-sizing: border-box;
   }
 
@@ -160,7 +160,9 @@
   .custom-quick-view__first-row {
     display: flex;
     gap: 12px;
-    align-items: flex-start;
+    align-items: stretch;
+    height: 140px;
+    max-height: 140px;
   }
 
   .custom-quick-view__image-container {
@@ -169,7 +171,7 @@
     overflow: hidden;
     background-color: #f7f7f7;
     position: relative;
-    padding-bottom: 60%;
+    height: 100%;
   }
 
   .custom-quick-view__img {
@@ -185,19 +187,23 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
+    margin-top: 0;
+    justify-content: space-between;
+    height: 100%;
   }
 
   .custom-quick-view__title {
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-family: var(--font-h3--family);
-    font-weight: var(--font-h3--weight);
+    font-weight: 300;
     line-height: var(--font-h3--line-height);
     letter-spacing: var(--font-h3--letter-spacing);
     text-transform: var(--font-h3--case);
     font-style: var(--font-h3--style);
     color: #000000;
+    line-height: 120%;
   }
 
   .custom-quick-view__price-container {
@@ -207,10 +213,12 @@
   }
 
   .custom-quick-view__price {
-    font-size: 12px;
+    font-size: 16px;
     font-family: var(--font-paragraph--family);
-    font-weight: var(--font-paragraph--weight);
+    font-weight: 400;
     color: #000000;
+    line-height: 120%;
+
   }
 
   .custom-quick-view__compare-price {
@@ -220,26 +228,26 @@
   }
 
   .custom-quick-view__description {
-    font-size: 12px;
+    font-size: 14px;
     font-family: var(--font-paragraph--family);
-    font-weight: var(--font-paragraph--weight);
+    font-weight: 300;
     line-height: var(--font-paragraph--line-height);
     letter-spacing: var(--font-paragraph--letter-spacing);
     text-transform: var(--font-paragraph--case);
     color: #666666;
+    line-height: 110%;
+
   }
 
   /* Modal Row 2: contains colors and sizes variants selectors as shown in figma design */
   .custom-quick-view__second-row {
-    border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee;
     padding: 8px 0;
   }
 
   .custom-quick-view-options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 11.5px;
   }
 
   .custom-option-group {
@@ -249,7 +257,7 @@
   }
 
   .custom-option-label {
-    font-size: 12px;
+    font-size: 14px;
     font-family: var(--font-paragraph--family);
     font-weight: var(--font-paragraph--weight);
     letter-spacing: var(--font-paragraph--letter-spacing);
@@ -278,9 +286,8 @@
   .custom-option-value-text {
     display: inline-block;
     padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    border: 1px solid #e0e0e0;
+    font-weight: 400 !important;
+    border: 1px solid #000000;
     border-radius: 8px;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     background-color: #fff;
@@ -304,7 +311,7 @@
     flex-wrap: nowrap;
     gap: 0;
     z-index: 1;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #000000;
     overflow: hidden;
     background-color: #ffffff;
     width: 100%;
@@ -358,12 +365,12 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     height: 100%;
-    padding: 8px 12px 8px 18px;
-    font-size: 13px;
-    font-weight: 500;
+    padding-left: 15px;
+    font-size: 18px;
+    font-weight: 400;
     color: #333;
     background-color: transparent !important;
     border: none !important;
@@ -375,26 +382,31 @@
 
   /* Modal Row 3: button styles for cart submission (add to cart) action and sold-out button state */
   .custom-quick-view__third-row {
-    margin-top: 8px;
+    margin-top: 51px;
   }
 
   .custom-quick-view-submit {
     position: relative;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
-    padding: 16px 24px;
+    padding: 12px 10.9px 12px 94.4px;
     background: #000000;
     color: #ffffff;
     border: none;
     font-family: var(--button-font-family-primary);
     font-weight: var(--font-paragraph--weight);
-    font-size: 13px;
+    font-size: 16px;
     letter-spacing: var(--font-paragraph--letter-spacing);
     text-transform: var(--button-text-case-primary);
     cursor: pointer;
     border-radius: 0;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 28px;
+    line-height: 20.48px;
     box-shadow: none;
     transition: background-color 0.3s ease;
   }
@@ -410,13 +422,12 @@
   }
 
   .custom-submit-arrow {
-    position: absolute;
-    right: 24px;
+    position: relative;
+    width: 34px;
+    height: auto;
+    object-fit: contain;
     transition: transform 0.3s ease;
-  }
-
-  .custom-quick-view-submit:hover:not(:disabled) .custom-submit-arrow {
-    transform: translateX(4px);
+    display: block;
   }
 
   /* Dropdown Elements: stylings for the size variant dropdown container and animation rules */
@@ -428,18 +439,26 @@
 
   .custom-dropdown-select__trigger {
     width: 100%;
-    padding: 12px 16px;
-    background-color: #f7f7f7;
-    border: none;
+    padding: 10px 21px 10px 13px;
+    background-color: #ffffff;
+    border: 0.5px solid #000000;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 400;
     color: #000;
     text-align: left;
     border-radius: 0;
+  }
+
+  .option-drowdown-v-line{
+    position: absolute;
+    width: 0.5px;
+    right:54px;
+    height: 100%;
+    background-color: #000;
   }
 
   .custom-dropdown-select__trigger-text {
@@ -450,7 +469,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 20px;
+    height: 8px;
+    width: 12px;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
@@ -463,6 +483,9 @@
     top: 100%;
     left: 0;
     width: 100%;
+    max-height: 99px;
+    overflow: scroll;
+    scrollbar-width: none;
     background-color: #ffffff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     opacity: 0;
@@ -519,7 +542,7 @@
     position: fixed;
     top: 24px;
     right: 24px;
-    background-color: var(--toast-bg);
+    background-color: #ffffff;
     color: var(--toast-color);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border-radius: 12px;

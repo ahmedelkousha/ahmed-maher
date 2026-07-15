@@ -56,6 +56,7 @@ if (!customElements.get('custom-quick-view')) {
       // Initialize dynamic slide animations for color selectors and setup custom dropdown overlays
       this.initColorSliders();
       this.initDropdowns();
+      this.updateVariant();
     }
 
     // Cleanup global listeners when the element is destroyed to prevent memory leaks
@@ -142,14 +143,23 @@ if (!customElements.get('custom-quick-view')) {
       const numOptions = this.variants[0].options.length;
       const selectedOptions = new Array(numOptions);
 
-      // Fetch checked choices from each option group block
+      // Fetch checked choices from each option group block and check for missing selections
+      let missingSelectionName = null;
       this.querySelectorAll('.custom-option-group').forEach((group) => {
         const optIdx = parseInt(group.getAttribute('data-option-index'), 10);
         const checkedRadio = group.querySelector('input[type="radio"]:checked');
         if (checkedRadio) {
           selectedOptions[optIdx] = checkedRadio.value;
+        } else {
+          const label = group.querySelector('.custom-option-label');
+          missingSelectionName = label ? label.innerText.trim() : 'Option';
         }
       });
+
+      if (missingSelectionName) {
+        this.submitBtn.setAttribute('disabled', 'true');
+        
+      }
 
       // Search the variants JSON to find a match that corresponds with our selected option combination
       const variant = this.variants.find((v) => {
@@ -195,7 +205,7 @@ if (!customElements.get('custom-quick-view')) {
         // If no variant configuration is found, disable the submit action
         this.submitBtn.setAttribute('disabled', 'true');
         const btnText = this.querySelector('.custom-submit-text');
-        if (btnText) btnText.innerText = 'Unavailable';
+        if (btnText) btnText.innerText = 'Add to Cart';
         const btnArrow = this.querySelector('.custom-submit-arrow');
         if (btnArrow) btnArrow.style.display = 'none';
       }
@@ -206,9 +216,25 @@ if (!customElements.get('custom-quick-view')) {
       if (!variantId) return;
 
       // Toggle state to visual loading mode so users aren't left guessing if the click worked
+      // Toggle state to visual loading mode so users aren't left guessing if the click worked
       if (this.submitBtn) {
         this.submitBtn.setAttribute('disabled', 'true');
-        this.submitBtn.innerHTML = '<span class="custom-quick-view-spinner"></span> Adding...';
+        const btnText = this.submitBtn.querySelector('.custom-submit-text');
+        if (btnText) {
+          btnText.dataset.originalText = btnText.innerText;
+          btnText.innerText = 'Adding...';
+        }
+        const btnArrow = this.submitBtn.querySelector('.custom-submit-arrow');
+        if (btnArrow) btnArrow.style.display = 'none';
+
+        let spinner = this.submitBtn.querySelector('.custom-quick-view-spinner');
+        if (!spinner) {
+          spinner = document.createElement('span');
+          spinner.className = 'custom-quick-view-spinner';
+          this.submitBtn.prepend(spinner);
+        } else {
+          spinner.style.display = '';
+        }
       }
 
       // Detect if this selection has Black and Medium variant selected, that accordingly adds Soft Winter Jacket to cart as requested in instructions link
@@ -264,13 +290,14 @@ if (!customElements.get('custom-quick-view')) {
         // Re-enable checkout button and restore default styles
         if (this.submitBtn) {
           this.submitBtn.removeAttribute('disabled');
-          this.submitBtn.innerHTML = `
-            <span class="custom-submit-text">Add to Cart</span>
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="custom-submit-arrow">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          `;
+          const btnText = this.submitBtn.querySelector('.custom-submit-text');
+          if (btnText && btnText.dataset.originalText) {
+            btnText.innerText = btnText.dataset.originalText;
+          }
+          const btnArrow = this.submitBtn.querySelector('.custom-submit-arrow');
+          if (btnArrow) btnArrow.style.display = '';
+          const spinner = this.submitBtn.querySelector('.custom-quick-view-spinner');
+          if (spinner) spinner.style.display = 'none';
           this.updateVariant();
         }
       }

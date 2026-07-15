@@ -1,3 +1,4 @@
+{{ 'custom-products-grid.css' | asset_url | stylesheet_tag }}
 <section id="custom-products-grid-{{ section.id }}" class="custom-products-grid">
   {% if section.settings.title != blank %}
     <h2 class="custom-products-grid__title">{{ section.settings.title }}</h2>
@@ -100,7 +101,7 @@
         assign has_multiple_variants = true
       endif
     %}
-    {% comment %} Custom Quick View Modal: contains the quick add to card working functionality for the product {% endcomment %}
+    {% comment %} Custom Quick View Modal: contains the quick add to card working functionality for the product (Not worth making a snippet as it will be used once when add products to cart, we could just do it for code cleanness) {% endcomment %}
     <custom-quick-view
       id="quick-view-{{ section.id }}-{{ product.id }}"
       class="custom-quick-view"
@@ -162,7 +163,7 @@
                     {% assign option_name_downcase = option.name | downcase %}
                     {% if option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
                       <div class="custom-option-group" data-option-index="{{ forloop.index0 }}">
-                        <span class="custom-option-label">{{ option.name }}:</span>
+                        <span class="custom-option-label">{{ option.name }}</span>
                         {% liquid
                           # Map option choices to align CSS-powered indicator slides under the active option value
                           assign active_color_idx = 0
@@ -201,7 +202,7 @@
                     {% assign option_name_downcase = option.name | downcase %}
                     {% unless option_name_downcase contains 'color' or option_name_downcase contains 'colour' %}
                       <div class="custom-option-group" data-option-index="{{ forloop.index0 }}">
-                        <span class="custom-option-label">{{ option.name }}:</span>
+                        <span class="custom-option-label">{{ option.name }}</span>
                         {% comment %} We keep these radio buttons hidden to manage variant state internally while maintaining form compatibility {% endcomment %}
                         <div class="custom-option-values custom-option-values--hidden" style="display: none;">
                           {% for value in option.values %}
@@ -210,9 +211,6 @@
                                 type="radio"
                                 name="option-{{ product.id }}-{{ option.name | handle }}"
                                 value="{{ value | escape }}"
-                                {% if option.selected_value == value %}
-                                  checked
-                                {% endif %}
                               >
                               <span class="custom-option-value-text">{{ value }}</span>
                             </label>
@@ -221,27 +219,22 @@
 
                         {% comment %} Our custom selector trigger that visually replaces the default system select elements {% endcomment %}
                         <div class="custom-dropdown-select">
+                           
                           <button type="button" class="custom-dropdown-select__trigger">
-                            <span class="custom-dropdown-select__trigger-text">
-                              {% if option.selected_value %}
-                                {{ option.selected_value }}
-                              {% else %}
-                                Choose your size
-                              {% endif %}
+                            <span class="option-drowdown-v-line">
                             </span>
+                            <span class="custom-dropdown-select__trigger-text">
+                              Choose your {{ option.name | downcase }}
+                            </span>
+                           
                             <span class="custom-dropdown-select__trigger-arrow">
-                              <svg
-                                viewBox="0 0 24 24"
-                                width="16"
-                                height="16"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                              <img
+                                src="{{ 'arrow-down.png' | asset_url }}"
+                                width="12"
+                                height="6"
+                                alt=""
+                                loading="lazy"
                               >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                              </svg>
                             </span>
                           </button>
                           <div class="custom-dropdown-select__options">
@@ -265,37 +258,41 @@
 
             {% comment %} Checkout functional submission (add to cart) button {% endcomment %}
             <div class="custom-quick-view__third-row">
-              <button
-                type="submit"
-                class="custom-quick-view-submit"
-                {% unless variant.available %}
-                  disabled
-                {% endunless %}
-              >
-                <span class="custom-submit-text">
-                  {% if variant.available %}
-                    Add to Cart
-                  {% else %}
-                    Sold Out
-                  {% endif %}
-                </span>
+              {% capture button_text %}
                 {% if variant.available %}
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="custom-submit-arrow"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
+                  Add to Cart
+                {% else %}
+                  Sold Out
                 {% endif %}
-              </button>
+              {% endcapture %}
+
+              {% capture arrow_img %}
+                <img 
+                  src="{{ 'arrow-add-to-cart.png' | asset_url }}" 
+                  class="custom-submit-arrow" 
+                  width="20" 
+                  height="20" 
+                  alt="" 
+                  loading="lazy"
+                  {% unless variant.available %}style="display: none;"{% endunless %}
+                >
+              {% endcapture %}
+
+              {%- assign is_disabled = false -%}
+              {%- unless variant.available -%}
+                {%- assign is_disabled = true -%}
+              {%- endunless -%}
+
+              {%
+                render 'custom-button',
+                tag: 'button',
+                type: 'submit',
+                class: 'custom-quick-view-submit',
+                text_class: 'custom-submit-text',
+                text: button_text | strip,
+                icon_svg: arrow_img,
+                disabled: is_disabled
+              %}
             </div>
           </form>
         </div>
@@ -317,7 +314,7 @@
     </div>
   </div>
 </div>
-{{ 'custom-products-grid.css' | asset_url | stylesheet_tag }}
+
 
 <style>
   #custom-products-grid-{{ section.id }} {

@@ -1,41 +1,54 @@
 {% comment %}
-  Renders a reusable Call-To-Action button with a slide hover animation.
-
-  Accepts:
-  - id: {String} Optional HTML id attribute
-  - class: {String} CSS classes to apply to the anchor tag (e.g. 'custom-split__btn')
-  - text_class: {String} CSS class for the inner text wrapper
-  - icon_class: {String} CSS class for the icon wrapper
-  - link: {String} The URL link
-  - text: {String} The button label
-  - icon: {Object} Optional Shopify image picker object for custom icons
-
-  Usage:
-  {% render 'custom-button',
-    id: 'block-btn-id',
-    class: 'custom-split__btn',
-    text_class: 'custom-split__btn-text',
-    icon_class: 'custom-split__btn-icon',
-    link: block.settings.button_link,
-    text: block.settings.button_text,
-    icon: block.settings.button_icon
-  %}
+  Button snippet for global use for anchors and form buttons.
 {% endcomment %}
 
-<a 
-  href="{{ link | default: '#' }}" 
-  class="btn-slide-hover {{ class }}"
-  {% if id != blank %}id="{{ id }}"{% endif %}
->
-  <span class="{{ text_class | default: 'custom-btn-text' }}">{{ text }}</span>
-  {% if icon != blank %}
-    <img 
-      src="{{ icon | image_url: width: 40 }}" 
-      class="{{ icon_class | default: 'custom-btn-icon' }}" 
-      width="20" 
-      height="20" 
-      alt="" 
-      loading="lazy"
-    >
-  {% endif %}
-</a>
+{% if tag == 'button' or type != blank %}
+  <button
+    {% if type != blank %}
+      type="{{ type }}"
+    {% endif %}
+    class="btn-slide-hover {{ class }}"
+    {% if id != blank %}
+      id="{{ id }}"
+    {% endif %}
+    {% if disabled %}
+      disabled
+    {% endif %}
+  >
+    <span class="{{ text_class | default: 'custom-btn-text' }}">{{ text }}</span>
+    {% if icon != blank %}
+      <img
+        src="{{ icon | image_url: width: 40 }}"
+        class="{{ icon_class | default: 'custom-btn-icon' }}"
+        width="20"
+        height="20"
+        alt=""
+        loading="lazy"
+      >
+    {% elsif icon_svg != blank %}
+      {{ icon_svg }}
+    {% endif %}
+  </button>
+{% else %}
+  <a
+    href="{{ link | default: '#' }}"
+    class="btn-slide-hover {{ class }}"
+    {% if id != blank %}
+      id="{{ id }}"
+    {% endif %}
+  >
+    <span class="{{ text_class | default: 'custom-btn-text' }}">{{ text }}</span>
+    {% if icon != blank %}
+      <img
+        src="{{ icon | image_url: width: 40 }}"
+        class="{{ icon_class | default: 'custom-btn-icon' }}"
+        width="20"
+        height="20"
+        alt=""
+        loading="lazy"
+      >
+    {% elsif icon_svg != blank %}
+      {{ icon_svg }}
+    {% endif %}
+  </a>
+{% endif %}
