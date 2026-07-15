@@ -148,6 +148,8 @@
     }
   },
   "platform_customizations": {
-    "custom_css": []
+    "custom_css": [
+      ".btn-slide-hover{width: max-content;}"
+    ]
   }
 }
