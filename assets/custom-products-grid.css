@@ -134,11 +134,11 @@
 
   .custom-quick-view-modal__close {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(0, 0, 0, 0.05);
+    top: 13px;
+    right: 13px;
+    background: transparent;
     border: none;
-    font-size: 20px;
+    font-size: 26px;
     cursor: pointer;
     color: #333;
     width: 28px;
@@ -146,14 +146,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease, transform 0.2s ease;
     z-index: 10;
-  }
-
-  .custom-quick-view-modal__close:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    transform: rotate(90deg);
   }
 
   /* Modal Row 1: splits product image with container includes title, price, and description in a side-by-side layout */

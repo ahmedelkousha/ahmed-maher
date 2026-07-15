@@ -102,7 +102,7 @@
       endif
     %}
     {% comment %} Custom Quick View Modal: contains the quick add to card working functionality for the product (Not worth making a snippet as it will be used once when add products to cart, we could just do it for code cleanness) {% endcomment %}
-    <custom-quick-view
+    <div
       id="quick-view-{{ section.id }}-{{ product.id }}"
       class="custom-quick-view"
       data-variants="{{ product.variants | json | escape }}"
@@ -257,7 +257,7 @@
             </div>
 
             {% comment %} Checkout functional submission (add to cart) button {% endcomment %}
-            <div class="custom-quick-view__third-row">
+             <div class="custom-quick-view__third-row">
               {% capture button_text %}
                 {% if variant.available %}
                   Add to Cart
@@ -279,9 +279,11 @@
               {% endcapture %}
 
               {%- assign is_disabled = false -%}
-              {%- unless variant.available -%}
+              {%- if has_multiple_variants -%}
                 {%- assign is_disabled = true -%}
-              {%- endunless -%}
+              {%- elsif variant.available == false -%}
+                {%- assign is_disabled = true -%}
+              {%- endif -%}
 
               {%
                 render 'custom-button',
@@ -297,7 +299,7 @@
           </form>
         </div>
       </div>
-    </custom-quick-view>
+    </div>
   {% endfor %}
 </div>
 
