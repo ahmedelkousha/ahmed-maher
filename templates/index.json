@@ -84,7 +84,7 @@
         "section_width": "page-width",
         "section_height": "auto",
         "section_height_custom": 50,
-        "background_color": "rgba(0,0,0,0)",
+        "background_color": "#FFFFFF",
         "toggle_overlay": true,
         "overlay_color": "#12121266",
         "overlay_style": "solid",
