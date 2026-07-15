@@ -230,6 +230,7 @@
         if (triggerText) {
           triggerText.innerText = 'Choose your ' + optionName;
         }
+        dropdown.classList.remove('has-selected');
         dropdown.querySelectorAll('.custom-dropdown-select__option').forEach((opt) => {
           opt.classList.remove('is-selected');
         });
@@ -379,6 +380,7 @@
 
       triggerText.innerText = val;
       dropdown.classList.remove('is-open');
+      dropdown.classList.add('has-selected');
 
       dropdown.querySelectorAll('.custom-dropdown-select__option').forEach((el) => {
         el.classList.toggle('is-selected', el === optionEl);
