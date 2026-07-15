@@ -149,7 +149,8 @@
   },
   "platform_customizations": {
     "custom_css": [
-      ".btn-slide-hover {width: unset;}"
+      ".btn-slide-hover {width: unset;}",
+      ".custom-quick-view-submit{width: 100% !important;}"
     ]
   }
 }
