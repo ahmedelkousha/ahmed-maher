@@ -285,16 +285,7 @@
                 {%- assign is_disabled = true -%}
               {%- endif -%}
 
-              {%
-                render 'custom-button',
-                tag: 'button',
-                type: 'submit',
-                class: 'custom-quick-view-submit',
-                text_class: 'custom-submit-text',
-                text: button_text | strip,
-                icon_svg: arrow_img,
-                disabled: is_disabled
-              %}
+              {% render 'custom-button', tag: 'button', type: 'submit', class: 'custom-quick-view-submit', text_class: 'custom-submit-text', text: button_text, icon_svg: arrow_img, disabled: is_disabled %}
             </div>
           </form>
         </div>
@@ -623,3 +614,25 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+                    render 'custom-button',
+                    tag: 'button',
+                    type: 'submit',
+                    class: 'custom-quick-view-submit',
+                    text_class: 'custom-submit-text',
+                    text: button_text | strip,
+                    icon_svg: arrow_img,
+                    disabled: is_disabled
+                  %}
+  to: "{% render 'custom-button', tag: 'button', type: 'submit', class: 'custom-quick-view-submit',
+    text_class: 'custom-submit-text', text: button_text, icon_svg: arrow_img, disabled:
+    is_disabled %}"
+  position: 14513..14704
+{% endcomment %}
